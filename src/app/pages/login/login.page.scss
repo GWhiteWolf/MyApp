@@ -1,0 +1,21 @@
+.fondo {
+    position: bottom;
+    height: 300px;
+    width: 100%;
+    overflow: auto;
+    background-color: rgb(255, 255, 255);
+}
+
+ion-content {
+    --background: none;
+}
+
+ion-padding {
+    position: bottom;
+    bottom: 20%;
+    --background: none;
+}
+
+ion-item {
+    width: 80%;
+}

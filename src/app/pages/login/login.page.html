@@ -6,23 +6,23 @@
 <br>
 <br>
 <br>
-<ion-content class="ion-padding">
-  <ion-item>
-    <ion-label position="floating">Usuario</ion-label>
-    <ion-input [(ngModel)]="login.usuario"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Contraseña</ion-label>
-    <ion-input type="password" [(ngModel)]="login.password"></ion-input>
-  </ion-item>
-  <ion-button expand="full" (click)="ingresar()">Login</ion-button>
-  <ion-row>
-    <ion-col>
-      <ion-button fill="clear">Olvidaste la contraseña?</ion-button>
-    </ion-col>
-    <ion-col>
-      <ion-button fill="clear">Crear cuenta</ion-button>
-    </ion-col>
-  </ion-row>
-</ion-content>
-
+<div class="fondo">
+  <ion-content class="ion-padding">
+    <ion-item>
+      <ion-input label="Usuario" [(ngModel)]="login.usuario"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input type="password" [(ngModel)]="login.password"></ion-input>
+    </ion-item>
+    <ion-button expand="full" (click)="ingresar()">Login</ion-button>
+    <ion-row>
+      <ion-col>
+        <ion-button fill="clear">Olvidaste la contraseña?</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button fill="clear">Crear cuenta</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-content>
+</div>
