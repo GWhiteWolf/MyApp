@@ -1,41 +1,39 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Hoy
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="progress-container">
+    <ion-card>
+      <ion-card-content>
+        <div class="circle-container">
+          <div class="circle-text">2986</div>
+        </div>
+        <ion-button expand="block" color="primary" shape="round">Pausa</ion-button>
+      </ion-card-content>
+    </ion-card>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <ion-grid>
+      <ion-row>
+        <ion-col text-center>
+          <ion-icon name="walk" size="large"></ion-icon>
+          <p>1.86 Milla</p>
+        </ion-col>
+        <ion-col text-center>
+          <ion-icon name="flame" size="large"></ion-icon>
+          <p>162 Kcal</p>
+        </ion-col>
+        <ion-col text-center>
+          <ion-icon name="time" size="large"></ion-icon>
+          <p>00:26 Tiempo</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </div>
 </ion-content>
 
-<ion-tabs>
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="home">
-      <ion-icon name="play-circle"></ion-icon>
-      Hoy
-    </ion-tab-button>
-    <ion-tab-button tab="radio">
-      <ion-icon name="radio"></ion-icon>
-      Reporte
-    </ion-tab-button>
-    <ion-tab-button tab="library">
-      <ion-icon name="library"></ion-icon>
-      Kcal
-    </ion-tab-button>
-    <ion-tab-button tab="search">
-      <ion-icon name="search"></ion-icon>
-      Más
-    </ion-tab-button>
-  </ion-tab-bar>
-</ion-tabs>
+
