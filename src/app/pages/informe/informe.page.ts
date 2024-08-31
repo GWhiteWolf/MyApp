@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-informe',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InformePage implements OnInit {
 
-  constructor() { }
+  constructor(public router:Router) { }
 
   ngOnInit() {
+  }
+
+  botonHome(){
+    this.router.navigate(['/home']);
+  }
+
+  botonInforme(){
+    this.router.navigate(['/informe']);
+  }
+
+  botonLogros(){
+    this.router.navigate(['/logros']);
   }
 
 }

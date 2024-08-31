@@ -9,15 +9,4 @@ import { Router } from '@angular/router';
 export class AppComponent {
   constructor(public router:Router) {}
 
-  boton1(){
-    this.router.navigate(['/home']);
-  }
-
-  boton2(){
-    this.router.navigate(['/informe']);
-  }
-
-  boton3(){
-    this.router.navigate(['/home']);
-  }
 }

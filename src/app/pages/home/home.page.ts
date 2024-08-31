@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,18 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  constructor(public router:Router) { }
+
+  botonHome(){
+    this.router.navigate(['/home']);
+  }
+
+  botonInforme(){
+    this.router.navigate(['/informe']);
+  }
+
+  botonLogros(){
+    this.router.navigate(['/logros']);
+  }
 
 }
