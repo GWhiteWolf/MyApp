@@ -1,24 +1,40 @@
 <ion-app>
-  <ion-router-outlet>
-    <ion-tabs>
-      <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="home" (click)="boton1">
-          <ion-icon name="play-circle"></ion-icon>
-          <ion-label>Hoy</ion-label>
-        </ion-tab-button>
-        <ion-tab-button tab="informe" (click)="boton2">
-          <ion-icon name="bar-chart"></ion-icon>
-          <ion-label>Informe</ion-label>
-        </ion-tab-button>
-        <ion-tab-button tab="logros" (click)="boton3">
-          <ion-icon name="flame"></ion-icon>
-          <ion-label>Logros</ion-label>
-        </ion-tab-button>
-        <ion-tab-button tab="more">
-          <ion-icon name="ellipsis-horizontal"></ion-icon>
-          <ion-label>Más</ion-label>
-        </ion-tab-button>
-      </ion-tab-bar>
-    </ion-tabs>
-  </ion-router-outlet>
+  <ion-menu side="start" contentId="main-content" menuId="first">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Perfil</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <div class="profile-header">
+        <ion-avatar>
+          <img src="assets/avatar.png" />
+        </ion-avatar>
+        <h2>Nombre de Usuario</h2>
+      </div>
+      <ion-list>
+        <ion-list-header>Menu</ion-list-header>
+        <ion-item button>
+          <ion-label>Historial</ion-label>
+        </ion-item>
+      </ion-list>
+      <ion-list>
+        <ion-list-header>Configuraciones y Soporte</ion-list-header>
+        <ion-item button>
+          <ion-label>Terminos de Privacidad</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+
+    <ion-footer>
+      <ion-item lines="none" button (click)="cerrarSesion()">
+        <ion-icon name="log-out" slot="start"></ion-icon>
+        <ion-label>Cerrar Sesión</ion-label>
+      </ion-item>
+    </ion-footer>
+    
+  </ion-menu>
+
+  <ion-router-outlet id="main-content"></ion-router-outlet>
 </ion-app>
+

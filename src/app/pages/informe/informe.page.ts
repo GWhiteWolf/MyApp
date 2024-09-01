@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-informe',
@@ -7,9 +9,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InformePage implements OnInit {
 
-  constructor() { }
+  constructor(public router:Router, public menu:MenuController) { }
 
   ngOnInit() {
+  }
+
+  botonHome(){
+    this.router.navigate(['/home']);
+  }
+
+  botonInforme(){
+    this.router.navigate(['/informe']);
+  }
+
+  botonLogros(){
+    this.router.navigate(['/logros']);
+  }
+
+  abrirMenu() {
+    this.menu.open('first');
   }
 
 }

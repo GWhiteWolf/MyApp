@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { MenuController } from '@ionic/angular';
 
 @Component({
   selector: 'app-root',
@@ -7,17 +8,13 @@ import { Router } from '@angular/router';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(public router:Router) {}
+  constructor(public router:Router, public menu:MenuController) {}
 
-  boton1(){
-    this.router.navigate(['/home']);
+
+  cerrarSesion() {
+    console.log('Sesión cerrada');
+    this.menu.close(); 
+    this.router.navigate(['/login']);  
   }
 
-  boton2(){
-    this.router.navigate(['/informe']);
-  }
-
-  boton3(){
-    this.router.navigate(['/home']);
-  }
 }
