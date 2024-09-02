@@ -1,22 +1,17 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Login</ion-title>
-  </ion-toolbar>
-</ion-header>
-<br>
-<br>
-<br>
-<div class="fondo">
-  <ion-content class="ion-padding">
-    <ion-item>
-      <ion-input label="Usuario" [(ngModel)]="login.usuario"></ion-input>
+<ion-content class="ion-padding fondo">
+  <div class="titulo-flotante">
+    Iniciar Sesión
+    <h3>Para usar nuestro sistema de logros y marcapasos necesitas tener una cuenta!</h3>
+  </div>
+  <div class="login-container">
+    <ion-item class="input-field" lines="none">
+      <ion-input placeholder="Usuario" type="text" [(ngModel)]="login.usuario"></ion-input>
     </ion-item>
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" [(ngModel)]="login.password"></ion-input>
+    <ion-item class="input-field" lines="none">
+      <ion-input placeholder="Contraseña" type="password" [(ngModel)]="login.password"></ion-input>
     </ion-item>
-    <ion-button expand="full" (click)="ingresar()">Login</ion-button>
-    <ion-row>
+    <ion-button expand="block" shape="round" (click)="ingresar()">Entrar</ion-button>
+    <ion-row class="ion-margin-top">
       <ion-col>
         <ion-button fill="clear">Olvidaste la contraseña?</ion-button>
       </ion-col>
@@ -24,5 +19,5 @@
         <ion-button fill="clear">Crear cuenta</ion-button>
       </ion-col>
     </ion-row>
-  </ion-content>
-</div>
+  </div>
+</ion-content>
