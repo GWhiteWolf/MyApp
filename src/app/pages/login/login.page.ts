@@ -38,7 +38,7 @@ field:string="";
     }
     return true;
   }
-  
+
   async presentToast(position: 'top' | 'middle' | 'bottom', msg:string, duration?:number) {
     const toast = await this.toastController.create({
       message: msg,
