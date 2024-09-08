@@ -6,6 +6,7 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { SharedModule } from 'src/app/components/shared.module';
+import { CircularProgressComponent } from 'src/app/components/circular-progress/circular-progress.component';
 
 
 @NgModule({
@@ -16,6 +17,6 @@ import { SharedModule } from 'src/app/components/shared.module';
     HomePageRoutingModule,
     SharedModule  // importo el modulo compartido
   ],
-  declarations: [HomePage]
+  declarations: [HomePage, CircularProgressComponent]
 })
 export class HomePageModule {}
