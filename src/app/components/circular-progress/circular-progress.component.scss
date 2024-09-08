@@ -1,0 +1,56 @@
+body, ion-content {
+    background-color: #1c1c1c;
+}
+
+.circular-chart {
+    width: 250px;  
+    height: 250px;
+    overflow: visible; 
+}
+
+.circle-bg {
+    fill: none;
+    stroke: #20afd338; 
+    stroke-width: 2.4; 
+}
+
+.circle {
+    fill: none;
+    stroke-width: 2.5;
+    stroke: url(#gradient);  /* Aplicar gradiente neón */
+    stroke-linecap: round;  /* Bordes redondeados en la barra */
+    filter: drop-shadow(0px 0px 15px #00e1ff);  /* Efecto neón */
+    transition: stroke-dasharray 1.5s ease-out; /* Transición suave */
+}
+
+.percentage {
+    fill: #ffffff;  
+    font-size: .57em; 
+    font-weight: bold;
+    text-anchor: middle;
+    filter: drop-shadow(0px 0px 10px #29cdff79); 
+}
+
+.circle-progress {
+    background-color: #1c1c1c;  
+    padding: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hoy-text {
+    fill: #dcdcdc;
+    font-size: 0.225em;
+}
+
+.meta-text {
+    fill: #888888;
+    font-size: 0.15em;
+}
+
+
+
+
+
