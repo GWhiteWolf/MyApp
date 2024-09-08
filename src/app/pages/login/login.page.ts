@@ -22,7 +22,10 @@ field:string="";
 
   ingresar(){
     if(this.validateModel(this.login)){
-      this.presentToast("top", "Bienvenid@!")
+
+      localStorage.setItem('usuario', this.login.usuario);
+
+      this.presentToast("top", "Bienvenid@! " + this.login.usuario + "!")
       this.router.navigate(['/home']);
     }else{
       this.presentToast("bottom", "Error: Falta:" + this.field, 4000);

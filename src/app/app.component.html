@@ -1,5 +1,5 @@
 <ion-app>
-  <ion-menu side="start" contentId="main-content" menuId="first">
+  <ion-menu *ngIf="!isLoginPage()" side="start" contentId="main-content" menuId="first">
     <ion-header>
       <ion-toolbar>
         <ion-title>Perfil</ion-title>
@@ -8,9 +8,9 @@
     <ion-content>
       <div class="profile-header">
         <ion-avatar>
-          <img src="assets/avatar.png" />
+          <img src="assets/icon/cat.jpeg" />
         </ion-avatar>
-        <h2>Nombre de Usuario</h2>
+        <h2>{{ nombreUsuario }}</h2>
       </div>
       <ion-list>
         <ion-list-header>Menu</ion-list-header>

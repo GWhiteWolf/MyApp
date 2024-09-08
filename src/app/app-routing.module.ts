@@ -22,9 +22,6 @@ const routes: Routes = [
   {
     path: 'logros',
     loadChildren: () => import('./pages/logros/logros.module').then( m => m.LogrosPageModule)
-  },  {
-    path: 'page-component',
-    loadChildren: () => import('./pages/page-component/page-component.module').then( m => m.PageComponentPageModule)
   },
 
 ];

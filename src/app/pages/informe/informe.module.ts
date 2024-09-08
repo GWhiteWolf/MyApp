@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { InformePageRoutingModule } from './informe-routing.module';
 
 import { InformePage } from './informe.page';
+import { SharedModule } from 'src/app/components/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    InformePageRoutingModule
+    InformePageRoutingModule,
+    SharedModule
   ],
   declarations: [InformePage]
 })
