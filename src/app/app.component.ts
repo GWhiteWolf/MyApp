@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { MenuController } from '@ionic/angular';
 
 @Component({
@@ -8,13 +8,26 @@ import { MenuController } from '@ionic/angular';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(public router:Router, public menu:MenuController) {}
+  nombreUsuario: string = '';
 
-
-  cerrarSesion() {
-    console.log('Sesión cerrada');
-    this.menu.close(); 
-    this.router.navigate(['/login']);  
+  constructor(public router: Router, public menu: MenuController) {
+    // para escuchar los cambios de ruta
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.nombreUsuario = localStorage.getItem('usuario') || 'Nombre de Usuario';
+      }
+    });
   }
 
+  isLoginPage() {
+    return this.router.url === '/login';
+  }
+
+  cerrarSesion() {
+    localStorage.removeItem('usuario');
+    this.menu.close('first').then(() => {
+      this.router.navigate(['/login']);
+    });
+  }
 }
+
