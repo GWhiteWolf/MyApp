@@ -20,15 +20,22 @@ field:string="";
   ngOnInit() {
   }
 
-  ingresar(){
-    if(this.validateModel(this.login)){
-
-      localStorage.setItem('usuario', this.login.usuario);
-
-      this.presentToast("top", "Bienvenid@! " + this.login.usuario + "!")
-      this.router.navigate(['/home']);
-    }else{
-      this.presentToast("bottom", "Error: Falta:" + this.field, 4000);
+  ingresar() {
+    const savedUser = localStorage.getItem(this.login.usuario);
+    if (this.validateModel(this.login)) {
+      if (savedUser) {
+        const user = JSON.parse(savedUser);
+        if (user.password === this.login.password) {
+          this.presentToast('top', 'Bienvenid@! ' + this.login.usuario + '!');
+          this.router.navigate(['/home']);
+        } else {
+          this.presentToast('bottom', 'Contraseña incorrecta', 4000);
+        }
+      } else {
+        this.presentToast('bottom', 'Usuario no encontrado', 4000);
+      }
+    } else {
+      this.presentToast('bottom', 'Error: Falta ' + this.field, 4000);
     }
   }
 

@@ -22,7 +22,11 @@ const routes: Routes = [
   {
     path: 'logros',
     loadChildren: () => import('./pages/logros/logros.module').then( m => m.LogrosPageModule)
+  },  {
+    path: 'registro',
+    loadChildren: () => import('./pages/registro/registro.module').then( m => m.RegistroPageModule)
   },
+
 
 ];
 
