@@ -1,3 +1,5 @@
-<p>
-  componente2 works!
-</p>
+<div class="trophy-container" *ngIf="unlocked">
+  <ion-icon name="trophy" size="large"></ion-icon>
+  <p>{{ description }}</p>
+</div>
+<div class="particles" *ngIf="showParticles"></div>
