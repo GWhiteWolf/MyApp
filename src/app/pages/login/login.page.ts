@@ -29,6 +29,7 @@ field:string="";
         if (user.password === this.login.password) {
           this.presentToast('top', 'Bienvenid@! ' + this.login.usuario + '!');
           this.router.navigate(['/home']);
+          localStorage.setItem('usuario', this.login.usuario);
         } else {
           this.presentToast('bottom', 'Contraseña incorrecta', 4000);
         }
