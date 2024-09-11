@@ -1,3 +1,15 @@
-<p>
-  componente3 works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Restablecer Contraseña</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Cerrar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-input placeholder="Ingresa tu correo" type="email" [(ngModel)]="email"></ion-input>
+  </ion-item>
+  <ion-button expand="block" shape="round" (click)="enviarCorreo()">Enviar</ion-button>
+</ion-content>

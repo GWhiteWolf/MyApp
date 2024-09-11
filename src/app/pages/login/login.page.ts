@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
+import { ResetPasswordModalComponent } from 'src/app/components/componente3/componente3.component';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginPage implements OnInit {
   }
 field:string="";
 
-  constructor(public router:Router, public toastController:ToastController) { }
+  constructor(public router:Router, public toastController:ToastController, private modalController: ModalController) { }
 
   ngOnInit() {
   }
@@ -47,6 +48,13 @@ field:string="";
       }
     }
     return true;
+  }
+
+  async openResetPasswordModal() {
+    const modal = await this.modalController.create({
+      component: ResetPasswordModalComponent,
+    });
+    return await modal.present();
   }
 
   async presentToast(position: 'top' | 'middle' | 'bottom', msg:string, duration?:number) {
