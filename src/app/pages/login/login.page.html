@@ -1,14 +1,22 @@
 <ion-content class="ion-padding fondo">
+  <!-- Texto de bienvenida -->
   <div class="titulo-flotante">
-    Iniciar Sesión
-    <h3>Para usar nuestro sistema de logros y marcapasos necesitas tener una cuenta!</h3>
+    <h3>Iniciar Sesión</h3>
+    <h6>Para usar nuestro sistema de logros y marcapasos necesitas tener una cuenta!</h6>
   </div>
+
+  <!-- Imagen del vector -->
+  <img src="/assets/img/land.png" class="background-vector" alt="Fondo decorativo">
+
+  <!-- Contenido de la página (formularios y botones) -->
   <ion-card>
     <ion-item class="input-field" lines="none">
-      <ion-input placeholder="Usuario" type="text" [(ngModel)]="login.usuario"></ion-input>
+      <ion-input placeholder=" Usuario" type="text" [(ngModel)]="login.usuario"></ion-input>
+      <ion-icon name="person-outline" slot="end"></ion-icon>
     </ion-item>
     <ion-item class="input-field" lines="none">
-      <ion-input placeholder="Contraseña" type="password" [(ngModel)]="login.password"></ion-input>
+      <ion-input placeholder=" Contraseña" type="password" [(ngModel)]="login.password"></ion-input>
+      <ion-icon name="lock-closed-outline" slot="end"></ion-icon>
     </ion-item>
     <ion-button expand="block" shape="round" (click)="ingresar()">Entrar</ion-button>
     <ion-row class="ion-margin-top">
@@ -16,8 +24,10 @@
         <ion-button fill="clear">Olvidaste la contraseña?</ion-button>
       </ion-col>
       <ion-col>
-        <ion-button fill="clear" routerLink="../registro">Crear cuenta</ion-button>
+        <ion-button fill="outline" routerLink="../registro">Crear cuenta</ion-button>
       </ion-col>
     </ion-row>
   </ion-card>
 </ion-content>
+
+
