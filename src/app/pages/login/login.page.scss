@@ -1,5 +1,5 @@
 .fondo {
-    --background: linear-gradient(180deg, #81b8f6, #2162c4); /* Degradado de azul claro a azul más oscuro */
+    --background: linear-gradient(180deg, #ffbe69 0%, #ffbf6b 50%, #437ecb 100%);
     display: flex;
     flex-direction: column;
     justify-content: space-between; 
@@ -9,6 +9,7 @@
     position: relative;
     overflow: hidden; 
 }
+
 
 .titulo-flotante {
     margin-top: 10%;

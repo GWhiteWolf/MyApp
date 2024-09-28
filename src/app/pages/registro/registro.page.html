@@ -1,8 +1,11 @@
 <ion-content class="ion-padding fondo">
   <div class="titulo-flotante">
-    Crear Cuenta
-    <h3>Regístrate para empezar a usar nuestro sistema!</h3>
+    <h3>Crear Cuenta</h3>
+    <h6>Regístrate para empezar a usar nuestro sistema!</h6>
   </div>
+
+  <img src="/assets/img/city.png" class="background-vector" alt="Fondo decorativo">
+
   <ion-card>
     <ion-item class="input-field" lines="none">
       <ion-input placeholder="Usuario" type="text" [(ngModel)]="register.usuario"></ion-input>
@@ -13,7 +16,7 @@
     <ion-button expand="block" shape="round" (click)="registrar()">Registrar</ion-button>
     <ion-row class="ion-margin-top">
       <ion-col>
-        <ion-button fill="clear" routerLink="/login">Ya tienes una cuenta?</ion-button>
+        <ion-button fill="clear" routerLink="/login">¿Ya tienes una cuenta?</ion-button>
       </ion-col>
     </ion-row>
   </ion-card>
