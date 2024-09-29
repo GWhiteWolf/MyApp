@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular'; 
 import { Componente1Component } from './componente1/componente1.component';
 import { Componente2Component } from './componente2/componente2.component';
+import { CalendarStreakComponent } from './calendar-streak/calendar-streak.component';
 
 @NgModule({
-  declarations: [Componente1Component, Componente2Component],
+  declarations: [Componente1Component, Componente2Component, CalendarStreakComponent],
   imports: [CommonModule, IonicModule],
-  exports: [Componente1Component, Componente2Component]
+  exports: [Componente1Component, Componente2Component, CalendarStreakComponent],
 })
 export class SharedModule {}

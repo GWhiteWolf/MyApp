@@ -1,0 +1,51 @@
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.calendar-header {
+font-weight: bold;
+margin-bottom: 10px;
+color: #ffbf6b;
+}
+
+.calendar-grid {
+display: grid;
+grid-template-columns: repeat(7, 1fr);
+gap: 10px;
+}
+
+.calendar-day-name {
+text-align: center;
+font-weight: bold;
+color: #ffbf6b;
+}
+
+.calendar-day {
+text-align: center;
+padding: 10px;
+background-color: #2f2c3d;
+color: white;
+border-radius: 50%;
+}
+
+.streak-day {
+background-color: #4caf50; /* Verde para indicar éxito */
+color: white;
+}
+
+.missed-day {
+background-color: #f44336; /* Rojo para indicar que no se alcanzó la meta */
+color: white;
+}
+
+.future-day {
+background-color: #cccccc; /* Gris para los días futuros */
+color: white;
+}
+
+.current-day {
+border: 2px solid #ffd700; /* Borde amarillo para el día actual */
+font-weight: bold;
+}
