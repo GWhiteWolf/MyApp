@@ -1,0 +1,22 @@
+<div class="calendar-container">
+  <div class="calendar-header">
+    <span>{{ currentMonthName }} {{ currentYear }}</span>
+  </div>
+
+  <div class="calendar-grid">
+    <div class="calendar-day-name" *ngFor="let day of dayNames">
+      {{ day }}
+    </div>
+
+    <div *ngFor="let day of days" 
+      [ngClass]="{
+        'streak-day': day.streak && !day.isFuture,
+        'missed-day': !day.streak && !day.isFuture,
+        'future-day': day.isFuture,
+        'current-day': day.isCurrent
+      }">
+      {{ day.number }}
+    </div>
+  </div>
+</div>
+
