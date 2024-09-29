@@ -1,0 +1,38 @@
+/* Estilo general de la barra de pestañas */
+ion-tab-bar {
+    --background: #1b1a23;
+    --border-color: #33303f;
+    --color: #e1e1e2;
+    --color-selected: #ffbf6b;
+    border-top: 1px solid var(--border-color);
+    height: 60px;
+}
+
+/* Estilo de los botones de la barra */
+ion-tab-button {
+    --color: #e1e1e2;
+    --color-selected: #ffbf6b;
+    font-size: 14px;
+    transition: transform 0.2s ease-in-out;
+}
+
+ion-tab-button:hover {
+    transform: translateY(-3px);
+}
+
+/* Tamaño de los iconos */
+ion-tab-button ion-icon {
+    font-size: 22px;
+}
+
+/* Estilo del texto */
+ion-tab-button ion-label {
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+/* Estilo del botón seleccionado */
+ion-tab-button[aria-selected="true"] {
+    --color: #ffbf6b;
+    font-weight: bold;
+}

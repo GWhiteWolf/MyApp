@@ -1,19 +1,19 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Hoy
-    </ion-title>
+    <ion-title>Hoy</ion-title>
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content [fullscreen]="true">
-
   <div class="progress-container">
-
-    <ion-card>
+    <ion-card class="progress-card">
       <ion-card-content>
         <app-circular-progress [pasos]="2563" [metaPasos]="6000"></app-circular-progress>
-        <ion-button expand="block" color="primary" shape="round">Pausa</ion-button>
+        <ion-button expand="block" class="pause-button" shape="round">
+          <ion-icon slot="start" name="pause"></ion-icon>
+          Pausar
+        </ion-button>
       </ion-card-content>
     </ion-card>
 
@@ -21,20 +21,21 @@
       <ion-row>
         <ion-col text-center>
           <ion-icon name="walk" size="large"></ion-icon>
-          <p>1.86 Milla</p>
+          <p>1.86 K.M.</p>
         </ion-col>
         <ion-col text-center>
           <ion-icon name="flame" size="large"></ion-icon>
-          <p>162 Kcal</p>
+          <p>162 Cal</p>
         </ion-col>
         <ion-col text-center>
           <ion-icon name="time" size="large"></ion-icon>
-          <p>00:26 Tiempo</p>
+          <p>00:26 Mins</p>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
 </ion-content>
+
 
 <app-componente1></app-componente1> 
 

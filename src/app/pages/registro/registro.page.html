@@ -9,15 +9,22 @@
   <ion-card>
     <ion-item class="input-field" lines="none">
       <ion-input placeholder="Usuario" type="text" [(ngModel)]="register.usuario"></ion-input>
+      <ion-icon name="person"></ion-icon>
     </ion-item>
     <ion-item class="input-field" lines="none">
       <ion-input placeholder="Contraseña" type="password" [(ngModel)]="register.password"></ion-input>
+      <ion-icon name="lock-closed"></ion-icon>
     </ion-item>
-    <ion-button expand="block" shape="round" (click)="registrar()">Registrar</ion-button>
+    <ion-button expand="block" shape="round" class="primary-button" (click)="registrar()">
+      <ion-icon slot="start" name="person-add"></ion-icon>
+      Registrar
+    </ion-button>
+
     <ion-row class="ion-margin-top">
       <ion-col>
-        <ion-button fill="clear" routerLink="/login">¿Ya tienes una cuenta?</ion-button>
+        <ion-button fill="clear" class="tertiary-button" routerLink="/login">¿Ya tienes una cuenta?</ion-button>
       </ion-col>
     </ion-row>
   </ion-card>
 </ion-content>
+

@@ -1,14 +1,94 @@
+ion-menu {
+  --background: #2f2c3d;
+}
+
 .profile-header {
-    text-align: center;
-    padding: 20px;
-  }
-  
-  .profile-header ion-avatar {
-    margin: 0 auto;
-  }
-  
-  .profile-header h2 {
-    margin-top: 10px;
-    color: white;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  background-color: #1f1d28;
+  border-bottom: 1px solid #3a3a48;
+}
+
+.profile-header ion-avatar {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+  border: 2px solid #ffbf6b;
+}
+
+.profile-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #ffbf6b;
+  font-weight: bold;
+}
+
+ion-toolbar {
+  --background: linear-gradient(90deg, #262431, #33303f);
+  --color: #ffbf6b;
+  height: 56px;
+  text-align: center;
+}
+
+ion-list-header {
+  font-size: 14px;
+  color: #ffbf6b;
+  padding: 5px 20px;
+  background-color: #2f2c3d;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+ion-item {
+  --background: #2f2c3d;
+  color: #e1e1e2;
+  margin: 5px 0;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+ion-item:hover {
+  --background: #1f1d28;
+}
+
+ion-item ion-icon {
+  color: #ffbf6b;
+  font-size: 20px;
+}
+
+ion-footer {
+  padding: 10px;
+  background-color: #1f1d28;
+}
+
+.logout-button {
+  --background: linear-gradient(90deg, #f0b364, #bf802d);
+  --background-activated: #df9b43;
+  --border-radius: 30px;
+  --color: #262431;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.logout-button ion-icon {
+  font-size: 20px;
+  color: #262431;
+  margin-right: 10px;
+}
+
+.logout-button:hover {
+  transform: translateY(-3px);
+}
+
+.logout-button:active {
+  opacity: 0.8;
+}
+
