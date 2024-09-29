@@ -7,72 +7,77 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Media Diaria</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-grid>
-        <ion-row>
-          <ion-col text-center>
-            <ion-icon name="walk" size="large"></ion-icon>
-            <p>7,356 Pasos</p>
-          </ion-col>
-          <ion-col text-center>
-            <ion-icon name="flame" size="large"></ion-icon>
-            <p>542 Kcal</p>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <!-- Aquí va a ir un gráfico, como una barra de progreso o gráfico de barras -->
+  <div class="progress-container">
+    <!-- Tarjeta Media Diaria -->
+    <ion-card class="progress-card">
       <ion-card-header>
-        <ion-card-title>Aquí irá un gráfico</ion-card-title>
+        <ion-card-title>Media Diaria</ion-card-title>
       </ion-card-header>
-      <div class="chart-container">
-        <canvas id="barChart"></canvas>
-      </div>
-    </ion-card-content>
-  </ion-card>
+      <ion-card-content>
+        <ion-grid class="info-grid">
+          <ion-row>
+            <ion-col text-center>
+              <ion-icon name="walk" size="large"></ion-icon>
+              <p>7,356 Pasos</p>
+            </ion-col>
+            <ion-col text-center>
+              <ion-icon name="flame" size="large"></ion-icon>
+              <p>542 Kcal</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <!-- Gráfico aquí -->
+        <ion-card-header>
+          <ion-card-title>Aquí irá un gráfico</ion-card-title>
+        </ion-card-header>
+        <div class="chart-container">
+          <canvas id="barChart"></canvas>
+        </div>
+      </ion-card-content>
+    </ion-card>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Resumen Semanal</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-label>Lun</ion-label>
-            <div class="bar"></div>
-          </ion-col>
-          <ion-col>
-            <ion-label>Mar</ion-label>
-            <div class="bar"></div>
-          </ion-col>
-          <ion-col>
-            <ion-label>Mie</ion-label>
-            <div class="bar"></div>
-          </ion-col>
-          <ion-col>
-            <ion-label>Jue</ion-label>
-            <div class="bar"></div>
-          </ion-col>
-          <ion-col>
-            <ion-label>Vie</ion-label>
-            <div class="bar"></div>
-          </ion-col>
-          <ion-col>
-            <ion-label>Sab</ion-label>
-            <div class="bar"></div>
-          </ion-col>
-          <ion-col>
-            <ion-label>Dom</ion-label>
-            <div class="bar"></div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
+    <!-- Tarjeta Resumen Semanal -->
+    <ion-card class="progress-card">
+      <ion-card-header>
+        <ion-card-title>Resumen Semanal</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-label>Lun</ion-label>
+              <div class="bar"></div>
+            </ion-col>
+            <ion-col>
+              <ion-label>Mar</ion-label>
+              <div class="bar"></div>
+            </ion-col>
+            <ion-col>
+              <ion-label>Mie</ion-label>
+              <div class="bar"></div>
+            </ion-col>
+            <ion-col>
+              <ion-label>Jue</ion-label>
+              <div class="bar"></div>
+            </ion-col>
+            <ion-col>
+              <ion-label>Vie</ion-label>
+              <div class="bar"></div>
+            </ion-col>
+            <ion-col>
+              <ion-label>Sab</ion-label>
+              <div class="bar"></div>
+            </ion-col>
+            <ion-col>
+              <ion-label>Dom</ion-label>
+              <div class="bar"></div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
+
 
 <app-componente1></app-componente1>

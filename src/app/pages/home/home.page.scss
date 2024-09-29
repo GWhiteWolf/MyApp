@@ -1,49 +1,88 @@
-#container {
-  text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+/* Estilo del ion-toolbar */
+ion-toolbar {
+  --background: linear-gradient(90deg, #262431, #33303f);
+  --color: #ffbf6b;
+  height: 56px; 
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+/* Fondo del ion-content */
+ion-content {
+  --background: #2f2c3d;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
-}
-
-
+/* Contenedor principal */
 .progress-container {
   text-align: center;
-  padding: 20px;
-}
-
-.circle-container {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background-color: #4caf50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 10px; 
+  background-color: #2f2c3d;
+  max-width: 100%;
   margin: 0 auto;
 }
 
-.circle-text {
-  color: white;
-  font-size: 32px;
+/* Estilo del ion-card */
+.progress-card {
+  --background: #1f1d28;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 10px auto; 
+  width: 90%; 
+  max-width: 400px; 
+}
+
+.progress-card ion-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px; 
+}
+
+
+/* Botón de pausa */
+.pause-button {
+  --background: linear-gradient(90deg, #f0b364, #bf802d);
+  --background-activated: #df9b43;
+  --border-radius: 30px;
+  --color: #262431;
+  --padding-start: 20px;
+  --padding-end: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  height: 40px; 
+}
+
+.pause-button ion-icon {
+  font-size: 20px;
+}
+
+/* Estilo del ion-grid */
+.info-grid {
+  padding: 0 10px; 
+  margin-top: 10px; 
+}
+
+ion-row {
+  flex-wrap: nowrap;
+  justify-content: space-around;
+}
+
+ion-col {
+  background-color: #1f1d28;
+  border-radius: 15px;
+  padding: 10px; 
+  margin: 5px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+ion-col ion-icon {
+  color: #ffbf6b;
+  margin-bottom: 5px; 
+  font-size: 24px; 
+}
+
+ion-col p {
+  margin: 0;
+  font-size: 14px; 
+  color: #E1E1E2;
+  font-weight: bold;
 }

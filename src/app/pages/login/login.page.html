@@ -1,6 +1,6 @@
 <ion-content class="ion-padding fondo">
   <div class="titulo-flotante">
-    <h3>Iniciar Sesión</h3>
+    <h3>Inicio de Sesión</h3>
     <h6>Para usar nuestro sistema de logros y marcapasos necesitas tener una cuenta!</h6>
   </div>
 
@@ -9,17 +9,23 @@
   <ion-card>
     <ion-item class="input-field" lines="none">
       <ion-input placeholder="Usuario" type="text" [(ngModel)]="login.usuario"></ion-input>
+      <ion-icon name="person"></ion-icon>
     </ion-item>
     <ion-item class="input-field" lines="none">
       <ion-input placeholder="Contraseña" type="password" [(ngModel)]="login.password"></ion-input>
+      <ion-icon name="lock-closed"></ion-icon>
     </ion-item>
-    <ion-button expand="block" shape="round" (click)="ingresar()">Entrar</ion-button>
+    <ion-button expand="block" shape="round" class="primary-button" (click)="ingresar()">
+      <ion-icon slot="start" name="log-in"></ion-icon>
+      Iniciar Sesión
+    </ion-button>
+
     <ion-row class="ion-margin-top">
       <ion-col>
-        <ion-button fill="clear" (click)="openResetPasswordModal()">Olvidaste la contraseña?</ion-button>
+        <ion-button fill="clear" class="secondary-button" (click)="openResetPasswordModal()">Olvidaste la contraseña?</ion-button>
       </ion-col>
       <ion-col>
-        <ion-button fill="clear" routerLink="../registro">Crear cuenta</ion-button>
+        <ion-button fill="clear" class="tertiary-button" routerLink="../registro">Crear cuenta</ion-button>
       </ion-col>
     </ion-row>
   </ion-card>
