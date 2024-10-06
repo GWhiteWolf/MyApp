@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
-import { Componente1Component } from './components/componente1/componente1.component'; // Asegúrate de importar tu componente
+import { Componente1Component } from './components/componente1/componente1.component';
+import { NoAuthGuard } from './auth/no-auth.guard';
 
 const routes: Routes = [
   {
@@ -11,11 +12,13 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule),
+    canActivate: [NoAuthGuard],
   },
   {
     path: 'registro',
-    loadChildren: () => import('./pages/registro/registro.module').then(m => m.RegistroPageModule)
+    loadChildren: () => import('./pages/registro/registro.module').then(m => m.RegistroPageModule),
+    canActivate: [NoAuthGuard],
   },
   {
     path: '',

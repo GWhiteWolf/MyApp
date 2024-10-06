@@ -11,7 +11,6 @@ export class AppComponent {
   nombreUsuario: string = '';
 
   constructor(public router: Router, public menu: MenuController) {
-    // para escuchar los cambios de ruta
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.nombreUsuario = localStorage.getItem('usuario') || 'Nombre de Usuario';
@@ -24,10 +23,15 @@ export class AppComponent {
   }  
 
   cerrarSesion() {
+    // Eliminar todos los elementos relevantes de la sesión
     localStorage.removeItem('usuario');
+    localStorage.removeItem('token');
+  
     this.menu.close('first').then(() => {
       this.router.navigate(['/login']);
+    }).catch((error) => {
+      console.error("Error al cerrar el menú:", error);
     });
-  }
+  }  
 }
 
