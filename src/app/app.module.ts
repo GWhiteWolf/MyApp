@@ -7,8 +7,13 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent,
+    PageNotFoundComponent,
+  ],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

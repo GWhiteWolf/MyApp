@@ -1,4 +1,4 @@
-<ion-app> 
+<ion-app>
   <ion-menu *ngIf="!isLoginPage()" side="start" contentId="main-content" menuId="first">
     <ion-header>
       <ion-toolbar>
@@ -13,18 +13,18 @@
         </ion-avatar>
         <h2>{{ nombreUsuario }}</h2>
       </div>
-      <ion-list>
+
         <ion-list-header>Menú</ion-list-header>
-        <ion-item button>
-          <ion-label>Historial</ion-label>
+        <ion-item button [routerLink]="['/Configuraciones']">
+          <ion-icon name="settings-outline" slot="start"></ion-icon>
+          <ion-label>Configuraciones</ion-label>
         </ion-item>
-      </ion-list>
-      <ion-list>
+
         <ion-list-header>Configuraciones y Soporte</ion-list-header>
-        <ion-item button>
-          <ion-label>Terminos de Privacidad</ion-label>
+        <ion-item button [routerLink]="['/privacidad']">
+          <ion-icon name="document-text-outline" slot="start"></ion-icon>
+          <ion-label>Términos de Privacidad</ion-label>
         </ion-item>
-      </ion-list>
     </ion-content>
 
     <ion-footer>
