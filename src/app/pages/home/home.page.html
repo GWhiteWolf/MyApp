@@ -34,6 +34,32 @@
       </ion-row>
     </ion-grid>
   </div>
+  <ion-card *ngIf="weatherData" class="progress-card">
+    <ion-card-header>
+      <ion-card-title>Clima Actual en {{ weatherData.name }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-grid class="info-grid">
+        <ion-row>
+          <ion-col>
+            <ion-icon name="thermometer-outline"></ion-icon>
+            <p>Temperatura</p>
+            <p>{{ weatherData.main.temp }} °C</p>
+          </ion-col>
+          <ion-col>
+            <ion-icon name="water-outline"></ion-icon>
+            <p>Humedad</p>
+            <p>{{ weatherData.main.humidity }}%</p>
+          </ion-col>
+          <ion-col>
+            <ion-icon name="speedometer-outline"></ion-icon>
+            <p>Viento</p>
+            <p>{{ weatherData.wind.speed }} m/s</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
 
 
