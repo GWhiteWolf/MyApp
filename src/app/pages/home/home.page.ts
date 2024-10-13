@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PasosService } from '../../services/pasos.service';
 
-
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -10,6 +9,7 @@ import { PasosService } from '../../services/pasos.service';
 })
 export class HomePage implements OnInit {
   weatherData: any;
+  seguimientoActivo: boolean = true; // Nueva variable para el estado de seguimiento
 
   constructor(
     private http: HttpClient,
@@ -34,24 +34,30 @@ export class HomePage implements OnInit {
   }
 
   incrementarPasos() {
-    this.pasosService.incrementarPasos();
-    console.log(`Pasos: ${this.pasosService.conteoPasos}`);
-    console.log(`Distancia: ${this.pasosService.distancia.toFixed(2)} km`);
-    console.log(`Calorías: ${this.pasosService.calorias.toFixed(2)} cal`);
+    if (this.seguimientoActivo) { 
+      this.pasosService.incrementarPasos();
+      console.log(`Pasos: ${this.pasosService.conteoPasos}`);
+      console.log(`Distancia: ${this.pasosService.distancia.toFixed(2)} km`);
+      console.log(`Calorías: ${this.pasosService.calorias.toFixed(2)} cal`);
+    } else {
+      console.log("El seguimiento está en pausa, no se pueden incrementar los pasos.");
+    }
   }
 
   detenerSeguimiento() {
-    this.pasosService.detenerSeguimiento();
+    if (this.seguimientoActivo) {
+      this.pasosService.detenerSeguimiento();
+      console.log('Seguimiento detenido');
+    } else {
+      this.pasosService.iniciarSeguimiento();
+      console.log('Seguimiento reanudado');
+    }
+    this.seguimientoActivo = !this.seguimientoActivo; // Cambia el estado
   }
 
   guardarProgreso() {
-    this.pasosService['guardarProgreso']();
+    this.pasosService.guardarProgreso();
   }
-
-  pruebaBoton() {
-    console.log("Botón de prueba presionado");
-    alert("Botón de prueba presionado");
-  } 
 
   resetearPasos() {
     this.pasosService.resetearPasos();
@@ -62,6 +68,4 @@ export class HomePage implements OnInit {
     this.pasosService.resetearProgreso();
     console.log('Progreso reseteado en la base de datos');
   }
-
-
 }

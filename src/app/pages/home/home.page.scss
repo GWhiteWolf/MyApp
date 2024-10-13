@@ -13,7 +13,7 @@ ion-content {
 /* Contenedor principal */
 .progress-container {
   text-align: center;
-  padding: 10px; 
+  padding: 0; 
   background-color: #2f2c3d;
   max-width: 100%;
   margin: 0 auto;
@@ -24,7 +24,7 @@ ion-content {
   --background: #1f1d28;
   border-radius: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin: 10px auto; 
+  margin: 8px auto; 
   width: 90%; 
   max-width: 400px; 
 }
@@ -58,7 +58,7 @@ ion-content {
 /* Estilo del ion-grid */
 .info-grid {
   padding: 0 10px; 
-  margin-top: 10px; 
+  margin-top: 8px; 
 }
 
 ion-row {
@@ -85,21 +85,4 @@ ion-col p {
   font-size: 14px; 
   color: #E1E1E2;
   font-weight: bold;
-}
-
-
-.icon-button[color="primary"] {
-  --background-activated: #007acc;
-}
-
-.icon-button[color="secondary"] {
-  --background-activated: #6c757d;
-}
-
-.icon-button[color="danger"] {
-  --background-activated: #dc3545;
-}
-
-.icon-button[color="warning"] {
-  --background-activated: #ffc107;
 }

@@ -18,9 +18,6 @@ export class PasosService {
   }
 
   iniciarSeguimiento() {
-    this.conteoPasos = 0;
-    this.distancia = 0;
-    this.calorias = 0;
     this.tiempoInicio = Date.now();
     this.iniciarTemporizador();
     console.log('Seguimiento iniciado');
@@ -29,6 +26,7 @@ export class PasosService {
   detenerSeguimiento() {
     if (this.suscripcionTemporizador) {
       this.suscripcionTemporizador.unsubscribe();
+      this.suscripcionTemporizador = null; 
       console.log('Seguimiento detenido');
     }
   }
@@ -87,4 +85,3 @@ export class PasosService {
     return Math.floor((Date.now() - this.tiempoInicio) / 1000 / 60);
   }
 }
-

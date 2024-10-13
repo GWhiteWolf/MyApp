@@ -12,14 +12,14 @@
         <app-circular-progress [pasos]="pasosService.conteoPasos" [metaPasos]="10000"></app-circular-progress>
         
         <ion-button expand="block" class="pause-button" shape="round" (click)="detenerSeguimiento()">
-          <ion-icon slot="start" name="pause"></ion-icon>
-          Pausar
-        </ion-button>
+          <ion-icon slot="start" [name]="seguimientoActivo ? 'pause' : 'play'"></ion-icon>
+          {{ seguimientoActivo ? 'Pausar' : 'Reanudar' }}
+        </ion-button>        
       </ion-card-content>
     </ion-card>
 
     <div class="test-buttons">
-      <ion-button fill="clear" (click)="incrementarPasos()" class="icon-button" color="primary">
+      <ion-button fill="clear" (click)="incrementarPasos()" [disabled]="!seguimientoActivo">
         <ion-icon name="add-circle-outline"></ion-icon>
       </ion-button>
       <ion-button fill="clear" (click)="resetearPasos()" class="icon-button" color="danger">
@@ -42,7 +42,7 @@
         </ion-col>
         <ion-col text-center>
           <ion-icon name="flame" size="large"></ion-icon>
-          <p>{{ pasosService.calorias | number:'1.0-0' }} Cal</p>
+          <p>{{ pasosService.calorias | number:'1.0-0' }} Kcal</p>
         </ion-col>
         <ion-col text-center>
           <ion-icon name="time" size="large"></ion-icon>
