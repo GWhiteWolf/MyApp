@@ -52,7 +52,7 @@ export class HomePage implements OnInit {
       this.pasosService.iniciarSeguimiento();
       console.log('Seguimiento reanudado');
     }
-    this.seguimientoActivo = !this.seguimientoActivo; // Cambia el estado
+    this.seguimientoActivo = !this.seguimientoActivo;
   }
 
   guardarProgreso() {

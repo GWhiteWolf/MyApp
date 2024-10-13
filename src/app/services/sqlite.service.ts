@@ -30,12 +30,16 @@ export class SqliteService {
         location: 'default'
       });
       await this.crearTablas();
+      this.cargarListaPasos();
       this.dbListo.next(true);
+  
+      this.mostrarMensaje('Base de datos inicializada correctamente');
     } catch (error) {
       this.mostrarMensaje('Error al iniciar la base de datos');
       console.error('Error initializing database', error);
     }
   }
+
 
   async crearTablas() {
     if (!this.database) return;
@@ -108,16 +112,20 @@ export class SqliteService {
   async cargarListaPasos() {
     if (!this.database) return;
     try {
-      const res = await this.database.executeSql(`SELECT * FROM pasos`, []);
+      const res = await this.database.executeSql(`SELECT * FROM historial_actividad`, []);
+      console.log(`Número de registros obtenidos: ${res.rows.length}`);
+  
       const pasos: any[] = [];
       for (let i = 0; i < res.rows.length; i++) {
         pasos.push(res.rows.item(i));
       }
       this.listaPasos.next(pasos);
+      console.log('Lista de pasos cargada desde la base de datos:', pasos);
     } catch (error) {
-      console.error('Error al cargar pasos', error);
+      console.error('Error al cargar la lista de pasos desde la base de datos:', error);
     }
   }
+
 
   async cargarListaLogros() {
     if (!this.database) return;
@@ -151,40 +159,45 @@ export class SqliteService {
     const values = [fecha, conteoPasos, calorias, distancia, tiempo];
     try {
       await this.database.executeSql(sql, values);
-
-      const metaCumplida = await this.verificarMetaDiaria(fecha, conteoPasos);
-      
-      if (mostrarMensaje || metaCumplida) {
-        this.mostrarMensaje(metaCumplida ? 'Meta alcanzada!' : 'Paso agregado');
+      console.log("Registro guardado exitosamente:", { fecha, conteoPasos, calorias, distancia, tiempo });
+  
+      if (mostrarMensaje) {
+        console.log("Llamando a mostrarMensaje para: Progreso guardado exitosamente");
+        await this.mostrarMensaje('Progreso guardado exitosamente');
       }
-
+  
       this.cargarListaPasos();
     } catch (error) {
-      console.error('Error al agregar paso', error);
+      console.error('Error al agregar registro de pasos en la base de datos:', error);
       if (mostrarMensaje) {
-        this.mostrarMensaje('Error al agregar paso');
+        this.mostrarMensaje('Error al guardar el progreso');
       }
     }
   }
 
-  async verificarMetaDiaria(fecha: string, conteoPasos: number) {
-    if (!this.database) return false;
-    const sql = `SELECT meta_diaria_pasos FROM configuracion_usuario WHERE id = 1`;
-    try {
-      const res = await this.database.executeSql(sql, []);
-      if (res.rows.length > 0) {
-        const metaDiaria = res.rows.item(0).meta_diaria_pasos;
-        const metaCumplida = conteoPasos >= metaDiaria ? 1 : 0;
+async verificarMetaDiaria(fecha: string, conteoPasos: number) {
+  if (!this.database) return false;
+  const sql = `SELECT meta_diaria_pasos FROM configuracion_usuario WHERE id = 1`;
+  try {
+    const res = await this.database.executeSql(sql, []);
+    if (res.rows.length > 0) {
+      const metaDiaria = res.rows.item(0).meta_diaria_pasos;
+      const metaCumplida = conteoPasos >= metaDiaria ? 1 : 0;
 
-        const updateSql = `UPDATE historial_actividad SET metas_cumplidas = ? WHERE fecha = ?`;
-        await this.database.executeSql(updateSql, [metaCumplida, fecha]);
-        return metaCumplida === 1;
+      const updateSql = `UPDATE historial_actividad SET metas_cumplidas = ? WHERE fecha = ?`;
+      await this.database.executeSql(updateSql, [metaCumplida, fecha]);
+
+      if (metaCumplida === 1) {
+        this.mostrarMensaje('¡Meta diaria alcanzada!');
       }
-    } catch (error) {
-      console.error('Error al verificar meta diaria', error);
+
+      return metaCumplida === 1;
     }
-    return false;
+  } catch (error) {
+    console.error('Error al verificar meta diaria', error);
   }
+  return false;
+}
 
   async resetearProgreso() {
     if (!this.database) return;

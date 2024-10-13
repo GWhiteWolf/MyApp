@@ -1,0 +1,65 @@
+/* Fondo y estilo de la tarjeta */
+:host {
+    display: block;
+    width: 100%;
+}
+
+.daily-average-card {
+    --background: #1f1d28;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 10px auto;
+    width: 90%;
+    max-width: 400px;
+}
+
+.daily-average-card ion-card-header {
+    color: #ffbf6b;
+}
+
+.daily-average-card ion-card-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffbf6b;
+}
+
+.daily-average-card ion-card-content {
+    padding: 10px;
+}
+
+.info-grid {
+    padding: 0 10px;
+    margin-top: 10px;
+}
+
+ion-card-header {
+    padding-top: 15px;
+    padding-bottom: 0px;
+}
+
+ion-row {
+    flex-wrap: nowrap;
+    justify-content: space-around;
+
+}
+
+ion-col {
+    background-color: #1f1d28;
+    border-radius: 15px;
+    padding: 10px;
+    margin: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+ion-col ion-icon {
+    color: #ffbf6b;
+    margin-bottom: 5px;
+    font-size: 24px;
+}
+
+ion-col p {
+    margin: 0;
+    font-size: 14px;
+    color: #E1E1E2;
+    font-weight: bold;
+}

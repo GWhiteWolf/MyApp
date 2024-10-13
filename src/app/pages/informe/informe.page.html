@@ -8,29 +8,16 @@
 
 <ion-content [fullscreen]="true">
   <div class="progress-container">
-    <!-- Tarjeta Media Diaria -->
+      <ion-card-content>
+        <app-daily-average></app-daily-average>
+      </ion-card-content>
+
+    <!-- Tarjeta de Racha de Metas -->
     <ion-card class="progress-card">
       <ion-card-header>
-        <ion-card-title>Media Diaria</ion-card-title>
+        <ion-card-title>Racha de Metas</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ion-grid class="info-grid">
-          <ion-row>
-            <ion-col text-center>
-              <ion-icon name="walk" size="large"></ion-icon>
-              <p>7,356 Pasos</p>
-            </ion-col>
-            <ion-col text-center>
-              <ion-icon name="flame" size="large"></ion-icon>
-              <p>542 Kcal</p>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-        
-        <!-- Calendario componente -->
-        <ion-card-header>
-          <ion-card-title>Racha de Metas</ion-card-title>
-        </ion-card-header>
         <div class="chart-container">
           <app-calendar-streak></app-calendar-streak>
         </div>

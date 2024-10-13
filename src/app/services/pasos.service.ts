@@ -9,6 +9,7 @@ export class PasosService {
   public conteoPasos: number = 0;
   public distancia: number = 0;
   public calorias: number = 0;
+  public mediaDiaria = { pasos: 0, calorias: 0 };
   private tiempoInicio: number = 0;
   private suscripcionTemporizador: Subscription | null = null;
   private servicioSQLite: SqliteService;
@@ -44,24 +45,53 @@ export class PasosService {
     });
   }
 
-  public guardarProgreso() {
+  calcularMediaDiaria() {
+    this.servicioSQLite.obtenerListaPasos().subscribe(data => {
+      console.log('Registros de pasos obtenidos para el cálculo de media:', data);
+
+      if (data.length > 0) {
+        const totalPasos = data.reduce((sum, item) => sum + item.conteo_pasos, 0);
+        const totalCalorias = data.reduce((sum, item) => sum + (item.conteo_pasos * 0.05), 0);
+  
+        this.mediaDiaria.pasos = Math.round(totalPasos / data.length);
+        this.mediaDiaria.calorias = Math.round(totalCalorias / data.length);
+  
+        console.log('Media Diaria Calculada sin filtro de umbral:', {
+          pasosPromedio: this.mediaDiaria.pasos,
+          caloriasPromedio: this.mediaDiaria.calorias
+        });
+      } else {
+        console.log('No hay registros para calcular la media diaria.');
+      }
+    });
+  }
+  
+  
+
+  public async guardarProgreso() {
     const fecha = new Date().toISOString();
     const tiempoTranscurrido = this.obtenerTiempoTranscurrido();
-
-    this.servicioSQLite.agregarRegistroPasos(
+  
+    await this.servicioSQLite.agregarRegistroPasos(
       fecha,
       this.conteoPasos,
       10000,
       this.calorias,
       this.distancia,
-      tiempoTranscurrido
+      tiempoTranscurrido,
+      true
     );
-
+    
+    await this.servicioSQLite.verificarMetaDiaria(fecha, this.conteoPasos);
+    this.calcularMediaDiaria();
     console.log(`Datos guardados: ${this.conteoPasos} pasos, ${this.distancia.toFixed(2)} km, ${this.calorias.toFixed(2)} cal, ${tiempoTranscurrido} mins`);
   }
+  
+
+
 
   public incrementarPasos() {
-    this.conteoPasos += 10;
+    this.conteoPasos += 100;
     this.calcularMetricas();
     
     if (this.conteoPasos % 100 === 0) {
@@ -78,6 +108,7 @@ export class PasosService {
 
   public async resetearProgreso() {
     await this.servicioSQLite.resetearProgreso();
+    this.calcularMediaDiaria();
     console.log('Progreso reseteado en la base de datos');
   }
 
