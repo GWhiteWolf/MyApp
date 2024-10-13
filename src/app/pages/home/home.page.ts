@@ -1,19 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { PasosService } from '../../services/pasos.service';
+
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
-
+export class HomePage implements OnInit {
   weatherData: any;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    public pasosService: PasosService
+  ) {}
 
   ngOnInit() {
     this.getWeatherData();
+    this.pasosService.iniciarSeguimiento();
   }
 
   getWeatherData() {
@@ -27,4 +32,25 @@ export class HomePage {
       console.log('Error obteniendo los datos del clima', error);
     });
   }
+
+  incrementarPasos() {
+    this.pasosService.incrementarPasos();
+    console.log(`Pasos: ${this.pasosService.conteoPasos}`);
+    console.log(`Distancia: ${this.pasosService.distancia.toFixed(2)} km`);
+    console.log(`Calorías: ${this.pasosService.calorias.toFixed(2)} cal`);
+  }
+
+  detenerSeguimiento() {
+    this.pasosService.detenerSeguimiento();
+  }
+
+  guardarProgreso() {
+    this.pasosService['guardarProgreso']();
+  }
+
+  pruebaBoton() {
+    console.log("Botón de prueba presionado");
+    alert("Botón de prueba presionado");
+}
+
 }

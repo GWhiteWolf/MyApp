@@ -30,7 +30,7 @@ field:string="";
           this.presentToast('top', 'Bienvenid@! ' + this.login.usuario + '!');
           this.router.navigate(['/home']);
           localStorage.setItem('usuario', this.login.usuario);
-          localStorage.setItem('token', 'some-fake-token'); // simulado el guardado de un token por mientras
+          localStorage.setItem('token', 'tokenUsuario'); // simulado el guardado de un token por mientras
         } else {
           this.presentToast('bottom', 'Contraseña incorrecta', 4000);
         }

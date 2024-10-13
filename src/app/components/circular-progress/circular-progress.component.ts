@@ -5,7 +5,7 @@ import { Component, OnInit, Input } from '@angular/core';
   templateUrl: './circular-progress.component.html',
   styleUrls: ['./circular-progress.component.scss'],
 })
-export class CircularProgressComponent  implements OnInit {
+export class CircularProgressComponent implements OnInit {
   @Input() pasos: number = 0;
   @Input() metaPasos: number = 10000;
   dayName: string = '';
@@ -18,8 +18,7 @@ export class CircularProgressComponent  implements OnInit {
     this.dayName = dayNames[today.getDay()];
   }
 
-
   get porcentaje(): number {
-    return this.pasos / this.metaPasos * 100;
+    return (this.pasos / this.metaPasos) * 100;
   }
 }

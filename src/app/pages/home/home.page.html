@@ -4,36 +4,47 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content [fullscreen]="true">
   <div class="progress-container">
     <ion-card class="progress-card">
       <ion-card-content>
-        <app-circular-progress [pasos]="2563" [metaPasos]="6000"></app-circular-progress>
-        <ion-button expand="block" class="pause-button" shape="round">
+
+        <app-circular-progress [pasos]="pasosService.conteoPasos" [metaPasos]="10000"></app-circular-progress>
+        
+        <ion-button expand="block" class="pause-button" shape="round" (click)="detenerSeguimiento()">
           <ion-icon slot="start" name="pause"></ion-icon>
           Pausar
         </ion-button>
       </ion-card-content>
     </ion-card>
 
+    <div class="test-buttons">
+      <ion-button expand="block" color="primary" (click)="incrementarPasos()">Incrementar Pasos</ion-button>
+      <ion-button expand="block" color="secondary" (click)="guardarProgreso()">Guardar Progreso</ion-button>
+    </div>
+
+    <ion-button expand="block" color="success" (click)="pruebaBoton()">Botón de Prueba</ion-button>
+
+
     <ion-grid>
       <ion-row>
         <ion-col text-center>
           <ion-icon name="walk" size="large"></ion-icon>
-          <p>1.86 K.M.</p>
+          <p>{{ pasosService.distancia | number:'1.2-2' }} K.M.</p>
         </ion-col>
         <ion-col text-center>
           <ion-icon name="flame" size="large"></ion-icon>
-          <p>162 Cal</p>
+          <p>{{ pasosService.calorias | number:'1.0-0' }} Cal</p>
         </ion-col>
         <ion-col text-center>
           <ion-icon name="time" size="large"></ion-icon>
-          <p>00:26 Mins</p>
+          <p>{{ pasosService.obtenerTiempoTranscurrido() }} Mins</p>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
+
+  <!-- Clima Actual (si está disponible) -->
   <ion-card *ngIf="weatherData" class="progress-card">
     <ion-card-header>
       <ion-card-title>Clima Actual en {{ weatherData.name }}</ion-card-title>
@@ -60,7 +71,5 @@
       </ion-grid>
     </ion-card-content>
   </ion-card>
+  
 </ion-content>
-
-
-
