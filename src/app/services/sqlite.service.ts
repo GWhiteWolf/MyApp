@@ -167,34 +167,6 @@ export class SqliteService {
     }
   }
 
-  async obtenerRegistroPasos(fecha: string) {
-    if (!this.database) return null;
-    try {
-      const res = await this.database.executeSql(`SELECT * FROM pasos WHERE fecha = ?`, [fecha]);
-      if (res.rows.length > 0) {
-        return res.rows.item(0); 
-      }
-      return null; 
-    } catch (error) {
-      console.error('Error al obtener registro de pasos', error);
-      return null;
-    }
-  }
-
-  async agregarLogro(nombre: string, fecha: string, estado: string) {
-    if (!this.database) return;
-    const sql = `INSERT INTO logros (nombre_logro, fecha_logro, estado, notificado) VALUES (?, ?, ?, 0)`;
-    const values = [nombre, fecha, estado];
-    try {
-      await this.database.executeSql(sql, values);
-      this.cargarListaLogros();
-      this.mostrarMensaje('Logro agregado');
-    } catch (error) {
-      console.error('Error al agregar logro', error);
-      this.mostrarMensaje('Error al agregar logro');
-    }
-  }
-
   async verificarMetaDiaria(fecha: string, conteoPasos: number) {
     if (!this.database) return false;
     const sql = `SELECT meta_diaria_pasos FROM configuracion_usuario WHERE id = 1`;
@@ -212,6 +184,18 @@ export class SqliteService {
       console.error('Error al verificar meta diaria', error);
     }
     return false;
+  }
+
+  async resetearProgreso() {
+    if (!this.database) return;
+    try {
+      await this.database.executeSql(`DELETE FROM historial_actividad`, []);
+      this.cargarListaPasos();
+      this.mostrarMensaje('Progreso reseteado en la base de datos');
+    } catch (error) {
+      console.error('Error al resetear el progreso en la base de datos', error);
+      this.mostrarMensaje('Error al resetear el progreso');
+    }
   }
 
   async mostrarMensaje(mensaje: string) {

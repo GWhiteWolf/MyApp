@@ -46,7 +46,7 @@ export class PasosService {
     });
   }
 
-  private guardarProgreso() {
+  public guardarProgreso() {
     const fecha = new Date().toISOString();
     const tiempoTranscurrido = this.obtenerTiempoTranscurrido();
 
@@ -63,7 +63,7 @@ export class PasosService {
   }
 
   public incrementarPasos() {
-    this.conteoPasos++;
+    this.conteoPasos += 10;
     this.calcularMetricas();
     
     if (this.conteoPasos % 100 === 0) {
@@ -71,7 +71,20 @@ export class PasosService {
     }
   }
 
+  public resetearPasos() {
+    this.conteoPasos = 0;
+    this.distancia = 0;
+    this.calorias = 0;
+    console.log('Conteo de pasos, distancia y calorías reseteados');
+  }
+
+  public async resetearProgreso() {
+    await this.servicioSQLite.resetearProgreso();
+    console.log('Progreso reseteado en la base de datos');
+  }
+
   public obtenerTiempoTranscurrido(): number {
     return Math.floor((Date.now() - this.tiempoInicio) / 1000 / 60);
   }
 }
+

@@ -19,12 +19,20 @@
     </ion-card>
 
     <div class="test-buttons">
-      <ion-button expand="block" color="primary" (click)="incrementarPasos()">Incrementar Pasos</ion-button>
-      <ion-button expand="block" color="secondary" (click)="guardarProgreso()">Guardar Progreso</ion-button>
+      <ion-button fill="clear" (click)="incrementarPasos()" class="icon-button" color="primary">
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="resetearPasos()" class="icon-button" color="danger">
+        <ion-icon name="refresh-circle-outline"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="guardarProgreso()" class="icon-button" color="secondary">
+        <ion-icon name="save-outline"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="resetearProgreso()" class="icon-button" color="warning">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
     </div>
-
-    <ion-button expand="block" color="success" (click)="pruebaBoton()">Botón de Prueba</ion-button>
-
+    
 
     <ion-grid>
       <ion-row>

@@ -86,3 +86,20 @@ ion-col p {
   color: #E1E1E2;
   font-weight: bold;
 }
+
+
+.icon-button[color="primary"] {
+  --background-activated: #007acc;
+}
+
+.icon-button[color="secondary"] {
+  --background-activated: #6c757d;
+}
+
+.icon-button[color="danger"] {
+  --background-activated: #dc3545;
+}
+
+.icon-button[color="warning"] {
+  --background-activated: #ffc107;
+}

@@ -51,6 +51,17 @@ export class HomePage implements OnInit {
   pruebaBoton() {
     console.log("Botón de prueba presionado");
     alert("Botón de prueba presionado");
-}
+  } 
+
+  resetearPasos() {
+    this.pasosService.resetearPasos();
+    console.log('Pasos reseteados');
+  }
+
+  resetearProgreso() {
+    this.pasosService.resetearProgreso();
+    console.log('Progreso reseteado en la base de datos');
+  }
+
 
 }
