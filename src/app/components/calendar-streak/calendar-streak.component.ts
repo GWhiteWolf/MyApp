@@ -12,8 +12,8 @@ export class CalendarStreakComponent implements OnInit {
   days: { number: number, streak: boolean, isFuture: boolean, isCurrent: boolean }[] = [];
   dayNames: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  streakDays = [1, 2, 3, 5, 8, 9, 10];  // Días en los que se ha logrado la meta
-
+  streakDays = [1, 2, 3, 5, 8, 9, 10]; 
+  
   constructor(private cdr: ChangeDetectorRef) {
     this.currentYear = new Date().getFullYear();
     this.currentMonth = new Date().getMonth();

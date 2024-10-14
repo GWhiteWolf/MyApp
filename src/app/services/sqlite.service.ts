@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@awesome-cordova-plugins/sqlite/ngx';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Platform, ToastController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
+import { Pasos } from '../clases/pasos';
+import { Logro } from '../clases/logro';
+import { HistorialActividad } from '../clases/historial-actividad';
 
 @Injectable({
   providedIn: 'root'
@@ -10,13 +13,12 @@ export class SqliteService {
   private database: SQLiteObject | null = null;
   private dbListo: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  private listaPasos = new BehaviorSubject<any[]>([]);
-  private listaLogros = new BehaviorSubject<any[]>([]);
+  private listaPasos = new BehaviorSubject<Pasos[]>([]);
+  private listaHistorial = new BehaviorSubject<HistorialActividad[]>([]);
 
   constructor(
     private platform: Platform,
-    private sqlite: SQLite,
-    private toastController: ToastController
+    private sqlite: SQLite
   ) {
     this.platform.ready().then(() => {
       this.iniciarBaseDatos();
@@ -26,22 +28,18 @@ export class SqliteService {
   async iniciarBaseDatos() {
     try {
       this.database = await this.sqlite.create({
-        name: 'activity_tracker.db',
+        name: 'contador.db',
         location: 'default'
       });
       await this.crearTablas();
-      this.cargarListaPasos();
       this.dbListo.next(true);
-  
-      this.mostrarMensaje('Base de datos inicializada correctamente');
+      console.log('Base de datos inicializada correctamente');
     } catch (error) {
-      this.mostrarMensaje('Error al iniciar la base de datos');
-      console.error('Error initializing database', error);
+      console.error('Error al iniciar la base de datos', error);
     }
   }
 
-
-  async crearTablas() {
+  private async crearTablas() {
     if (!this.database) return;
     try {
       await this.database.executeSql(
@@ -58,18 +56,11 @@ export class SqliteService {
         `CREATE TABLE IF NOT EXISTS logros (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           nombre_logro TEXT,
-          fecha_logro TEXT,
-          estado TEXT,
-          notificado INTEGER DEFAULT 0
-        )`, []
-      );
-
-      await this.database.executeSql(
-        `CREATE TABLE IF NOT EXISTS configuracion_usuario (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          meta_diaria_pasos INTEGER,
-          preferencias_notificaciones INTEGER DEFAULT 1,
-          fecha_inicio TEXT
+          descripcion TEXT,
+          tipo TEXT, -- Ej: 'pasos', 'calorias', 'tiempo'
+          objetivo INTEGER,
+          estado INTEGER DEFAULT 0,
+          icono TEXT DEFAULT 'lock-closed-outline'
         )`, []
       );
 
@@ -85,37 +76,29 @@ export class SqliteService {
         )`, []
       );
 
-      await this.database.executeSql(
-        `CREATE TABLE IF NOT EXISTS cache_motivacion (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          frase TEXT,
-          autor TEXT,
-          fecha_cache TEXT
-        )`, []
-      );
-
-      this.mostrarMensaje('Tablas creadas');
+      console.log('Tablas creadas');
     } catch (error) {
-      this.mostrarMensaje('Error al crear tablas');
-      console.error('Error creating tables', error);
+      console.error('Error al crear tablas', error);
     }
   }
 
-  obtenerListaPasos(): Observable<any[]> {
+  obtenerEstadoBaseDatos(): Observable<boolean> {
+    return this.dbListo.asObservable();
+  }
+
+  obtenerListaPasos(): Observable<Pasos[]> {
     return this.listaPasos.asObservable();
   }
 
-  obtenerListaLogros(): Observable<any[]> {
-    return this.listaLogros.asObservable();
+  obtenerListaHistorial(): Observable<HistorialActividad[]> {
+    return this.listaHistorial.asObservable();
   }
 
   async cargarListaPasos() {
     if (!this.database) return;
     try {
-      const res = await this.database.executeSql(`SELECT * FROM historial_actividad`, []);
-      console.log(`Número de registros obtenidos: ${res.rows.length}`);
-  
-      const pasos: any[] = [];
+      const res = await this.database.executeSql(`SELECT * FROM pasos`, []);
+      const pasos: Pasos[] = [];
       for (let i = 0; i < res.rows.length; i++) {
         pasos.push(res.rows.item(i));
       }
@@ -126,100 +109,126 @@ export class SqliteService {
     }
   }
 
-
-  async cargarListaLogros() {
+  async cargarHistorialActividad() {
     if (!this.database) return;
     try {
-      const res = await this.database.executeSql(`SELECT * FROM logros`, []);
-      const logros: any[] = [];
+      const res = await this.database.executeSql(`SELECT * FROM historial_actividad`, []);
+      const historial: HistorialActividad[] = [];
       for (let i = 0; i < res.rows.length; i++) {
-        logros.push(res.rows.item(i));
+        historial.push(res.rows.item(i));
       }
-      this.listaLogros.next(logros);
+      this.listaHistorial.next(historial);
+      console.log('Historial de actividad cargado:', historial);
     } catch (error) {
-      console.error('Error al cargar logros', error);
+      console.error('Error al cargar el historial de actividad:', error);
     }
   }
 
-  async agregarRegistroPasos(
-    fecha: string, 
-    conteoPasos: number, 
-    meta: number, 
-    calorias: number, 
-    distancia: number, 
-    tiempo: number, 
-    mostrarMensaje: boolean = false
-  ) {
+  async agregarRegistroHistorial(actividad: HistorialActividad) {
     if (!this.database) return;
+
     const sql = `
       INSERT OR REPLACE INTO historial_actividad 
       (fecha, pasos_totales, calorias_quemadas, distancia_recorrida, tiempo_actividad, metas_cumplidas) 
-      VALUES (?, ?, ?, ?, ?, 0)
+      VALUES (?, ?, ?, ?, ?, ?)
     `;
-    const values = [fecha, conteoPasos, calorias, distancia, tiempo];
+    
+    const values = [
+      actividad.fecha, 
+      actividad.pasosTotales, 
+      actividad.caloriasQuemadas, 
+      actividad.distanciaRecorrida, 
+      actividad.tiempoActividad, 
+      actividad.metasCumplidas
+    ];
+
     try {
       await this.database.executeSql(sql, values);
-      console.log("Registro guardado exitosamente:", { fecha, conteoPasos, calorias, distancia, tiempo });
-  
-      if (mostrarMensaje) {
-        console.log("Llamando a mostrarMensaje para: Progreso guardado exitosamente");
-        await this.mostrarMensaje('Progreso guardado exitosamente');
-      }
-  
-      this.cargarListaPasos();
+      console.log("Registro de actividad guardado exitosamente:", actividad);
+      this.cargarHistorialActividad();
     } catch (error) {
-      console.error('Error al agregar registro de pasos en la base de datos:', error);
-      if (mostrarMensaje) {
-        this.mostrarMensaje('Error al guardar el progreso');
-      }
+      console.error('Error al agregar registro de actividad en la base de datos:', error);
     }
   }
 
-async verificarMetaDiaria(fecha: string, conteoPasos: number) {
-  if (!this.database) return false;
-  const sql = `SELECT meta_diaria_pasos FROM configuracion_usuario WHERE id = 1`;
-  try {
-    const res = await this.database.executeSql(sql, []);
-    if (res.rows.length > 0) {
-      const metaDiaria = res.rows.item(0).meta_diaria_pasos;
-      const metaCumplida = conteoPasos >= metaDiaria ? 1 : 0;
+  async verificarMetaDiaria(fecha: string, conteoPasos: number): Promise<boolean> {
+    if (!this.database) return false;
+    const sql = `SELECT meta_diaria_pasos FROM configuracion_usuario WHERE id = 1`;
+    try {
+      const res = await this.database.executeSql(sql, []);
+      if (res.rows.length > 0) {
+        const metaDiaria = res.rows.item(0).meta_diaria_pasos;
+        const metaCumplida = conteoPasos >= metaDiaria ? 1 : 0;
 
-      const updateSql = `UPDATE historial_actividad SET metas_cumplidas = ? WHERE fecha = ?`;
-      await this.database.executeSql(updateSql, [metaCumplida, fecha]);
+        const updateSql = `UPDATE historial_actividad SET metas_cumplidas = ? WHERE fecha = ?`;
+        await this.database.executeSql(updateSql, [metaCumplida, fecha]);
 
-      if (metaCumplida === 1) {
-        this.mostrarMensaje('¡Meta diaria alcanzada!');
+        return metaCumplida === 1;
       }
-
-      return metaCumplida === 1;
+    } catch (error) {
+      console.error('Error al verificar meta diaria', error);
     }
-  } catch (error) {
-    console.error('Error al verificar meta diaria', error);
+    return false;
   }
-  return false;
-}
 
   async resetearProgreso() {
     if (!this.database) return;
     try {
       await this.database.executeSql(`DELETE FROM historial_actividad`, []);
-      this.cargarListaPasos();
-      this.mostrarMensaje('Progreso reseteado en la base de datos');
+      this.cargarHistorialActividad();
+      console.log('Historial de actividad reseteado');
     } catch (error) {
       console.error('Error al resetear el progreso en la base de datos', error);
-      this.mostrarMensaje('Error al resetear el progreso');
     }
   }
 
-  async mostrarMensaje(mensaje: string) {
-    const toast = await this.toastController.create({
-      message: mensaje,
-      duration: 2000
-    });
-    await toast.present();
+  async agregarLogro(logro: Logro) {
+    const sql = `
+      INSERT INTO logros (nombre_logro, descripcion, tipo, objetivo, estado, icono)
+      VALUES (?, ?, ?, ?, 0, 'lock-closed-outline')
+    `;
+    const values = [logro.nombre_logro, logro.descripcion, logro.tipo, logro.objetivo];
+  
+    if (this.database) {
+      await this.database.executeSql(sql, values);
+    } else {
+      console.error('error agregar logro');
+    }
   }
+  
+  
+  async obtenerLogros(): Promise<Logro[]> {
+    if (!this.database) {
+      console.error('error obtener logros');
+      return [];
+    }
+  
+    const res = await this.database.executeSql(`SELECT * FROM logros`, []);
+    const logros: Logro[] = [];
+    for (let i = 0; i < res.rows.length; i++) {
+      logros.push(res.rows.item(i));
+    }
+    return logros;
+  }
+  
+  
+  async desbloquearLogro(id: number) {
+    const sql = `UPDATE logros SET estado = 1, icono = 'trophy' WHERE id = ?`;
+    if (this.database) {
+      await this.database.executeSql(sql, [id]);
+    } else {
+      console.error('error desbloquear logro');
+    }
+  }
+  
+  // sqlite.service.ts
 
-  obtenerEstadoBaseDatos() {
-    return this.dbListo.asObservable();
+async ejecutarConsulta(sql: string, params: any[] = []): Promise<any> {
+  if (!this.database) {
+    console.error('error ejecutar consulta');
+    return;
   }
+  return this.database.executeSql(sql, params);
+}
+
 }
