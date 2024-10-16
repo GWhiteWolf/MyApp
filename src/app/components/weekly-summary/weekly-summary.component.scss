@@ -1,0 +1,8 @@
+.bar {
+    width: 100%;
+    background-color: orange;
+    height: 10px; // Altura mínima para probar si se muestra algo
+    border-radius: 4px;
+    margin-top: 8px;
+    transition: height 0.3s ease-in-out;
+}

@@ -4,36 +4,55 @@
   </ion-toolbar>
 </ion-header>
 
-
 <ion-content [fullscreen]="true">
   <div class="progress-container">
     <ion-card class="progress-card">
       <ion-card-content>
-        <app-circular-progress [pasos]="2563" [metaPasos]="6000"></app-circular-progress>
-        <ion-button expand="block" class="pause-button" shape="round">
-          <ion-icon slot="start" name="pause"></ion-icon>
-          Pausar
-        </ion-button>
+
+        <app-circular-progress [pasos]="pasosService.conteoPasos" [metaPasos]="10000"></app-circular-progress>
+        
+        <ion-button expand="block" class="pause-button" shape="round" (click)="detenerSeguimiento()">
+          <ion-icon slot="start" [name]="seguimientoActivo ? 'pause' : 'play'"></ion-icon>
+          {{ seguimientoActivo ? 'Pausar' : 'Reanudar' }}
+        </ion-button>        
       </ion-card-content>
     </ion-card>
+
+    <div class="test-buttons">
+      <ion-button fill="clear" (click)="incrementarPasos()" [disabled]="!seguimientoActivo">
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="resetearPasos()" class="icon-button" color="danger">
+        <ion-icon name="refresh-circle-outline"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="guardarProgreso()" class="icon-button" color="secondary">
+        <ion-icon name="save-outline"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="resetearProgreso()" class="icon-button" color="warning">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
+    </div>
+    
 
     <ion-grid>
       <ion-row>
         <ion-col text-center>
           <ion-icon name="walk" size="large"></ion-icon>
-          <p>1.86 K.M.</p>
+          <p>{{ pasosService.distancia | number:'1.2-2' }} K.M.</p>
         </ion-col>
         <ion-col text-center>
           <ion-icon name="flame" size="large"></ion-icon>
-          <p>162 Cal</p>
+          <p>{{ pasosService.calorias | number:'1.0-0' }} Kcal</p>
         </ion-col>
         <ion-col text-center>
           <ion-icon name="time" size="large"></ion-icon>
-          <p>00:26 Mins</p>
+          <p>{{ pasosService.obtenerTiempoTranscurrido() }} Mins</p>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
+
+  <!-- Clima Actual (si está disponible) -->
   <ion-card *ngIf="weatherData" class="progress-card">
     <ion-card-header>
       <ion-card-title>Clima Actual en {{ weatherData.name }}</ion-card-title>
@@ -60,7 +79,5 @@
       </ion-grid>
     </ion-card-content>
   </ion-card>
+  
 </ion-content>
-
-
-

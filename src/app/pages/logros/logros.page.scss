@@ -67,3 +67,21 @@ padding: 10px;
 .achievement-card[unlocked="true"] {
 animation: unlock 0.5s ease-in-out;
 }
+
+
+.crud-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+    }
+
+    .crud-icons {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    }
+
+    ion-icon {
+    font-size: 1.5em;
+    cursor: pointer;
+}

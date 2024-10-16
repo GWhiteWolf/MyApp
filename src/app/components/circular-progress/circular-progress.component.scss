@@ -17,10 +17,10 @@ body, ion-content {
 .circle {
     fill: none;
     stroke-width: 2.5;
-    stroke: url(#gradient);  /* Aplicar gradiente neón */
-    stroke-linecap: round;  /* Bordes redondeados en la barra */
-    filter: drop-shadow(0px 0px 15px #00e1ff);  /* Efecto neón */
-    transition: stroke-dasharray 1.5s ease-out; /* Transición suave */
+    stroke: url(#gradient); 
+    stroke-linecap: round;  
+    filter: drop-shadow(0px 0px 15px #00e1ff); 
+    transition: stroke-dasharray 1.5s ease-out;
 }
 
 .percentage {

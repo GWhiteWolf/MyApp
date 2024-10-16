@@ -1,0 +1,8 @@
+<ion-grid>
+  <ion-row>
+    <ion-col *ngFor="let day of weeklyData">
+      <ion-label>{{ day.label }}</ion-label>
+      <div class="bar" [style.height.%]="day.percentage"></div>
+    </ion-col>
+  </ion-row>
+</ion-grid>
