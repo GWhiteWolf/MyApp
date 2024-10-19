@@ -3,6 +3,8 @@ import { Subscription, interval } from 'rxjs';
 import { SqliteService } from './sqlite.service';
 import { ToastController } from '@ionic/angular';
 import { HistorialActividad } from '../clases/historial-actividad';
+import { PedometerData } from '../clases/pedometer-data'
+
 
 @Injectable({
   providedIn: 'root'
@@ -31,14 +33,37 @@ export class PasosService {
 
   iniciarSeguimiento() {
     this.tiempoInicio = Date.now();
+
+    // iniciar
+    if ((window as any).Pedometer) {
+      (window as any).Pedometer.startPedometerUpdates((data: PedometerData) => {
+        this.conteoPasos = data.numberOfSteps;
+        this.calcularMetricas();
+        console.log('Pasos actualizados:', this.conteoPasos);
+      }, (error: any) => {
+        console.error('Error al iniciar el podómetro:', error);
+      });
+    }    
+
     this.iniciarTemporizador();
     console.log('Seguimiento iniciado');
   }
+
 
   detenerSeguimiento() {
     if (this.suscripcionTemporizador) {
       this.suscripcionTemporizador.unsubscribe();
       this.suscripcionTemporizador = null;
+
+      // Detener
+      if ((window as any).Pedometer) {
+        (window as any).Pedometer.stopPedometerUpdates(() => {
+          console.log('Podómetro detenido');
+        }, (error: any) => {
+          console.error('Error al detener el podómetro:', error);
+        });
+      }
+      
       console.log('Seguimiento detenido');
     }
   }
@@ -81,7 +106,7 @@ export class PasosService {
     const tiempoTranscurrido = this.obtenerTiempoTranscurrido();
 
     const actividad = new HistorialActividad(
-      0, // ID se auto-incrementará en la base de datos
+      0,
       fecha,
       this.conteoPasos,
       this.calorias,
