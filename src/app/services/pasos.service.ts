@@ -3,6 +3,7 @@ import { Subscription, interval } from 'rxjs';
 import { SqliteService } from './sqlite.service';
 import { ToastController } from '@ionic/angular';
 import { HistorialActividad } from '../clases/historial-actividad';
+import { LogroService } from './logro.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class PasosService {
   private suscripcionTemporizador: Subscription | null = null;
   private servicioSQLite: SqliteService;
 
-  constructor(private injector: Injector, private toastController: ToastController) {
+  constructor(private injector: Injector, private toastController: ToastController, private logroService: LogroService) {
     this.servicioSQLite = this.injector.get(SqliteService);
   }
 
@@ -91,15 +92,11 @@ export class PasosService {
     );
 
     await this.servicioSQLite.agregarRegistroHistorial(actividad);
-    const metaAlcanzada = await this.servicioSQLite.verificarMetaDiaria(fecha, this.conteoPasos);
+    this.mostrarMensajeToast(`Datos guardados: ${this.conteoPasos} pasos, ${this.distancia.toFixed(2)} km, ${this.calorias.toFixed(2)} kcal`);
 
-    this.calcularMediaDiaria();
-    this.mostrarMensajeToast(`Datos guardados: ${this.conteoPasos} pasos, ${this.distancia.toFixed(2)} km, ${this.calorias.toFixed(2)} kcal, ${tiempoTranscurrido} mins`);
+    await this.logroService.verificarLogros(this.conteoPasos, this.calorias, tiempoTranscurrido);
 
-    if (metaAlcanzada) {
-      this.mostrarMensajeToast('¡Meta diaria alcanzada!');
-    }
-    console.log(`Datos guardados: ${this.conteoPasos} pasos, ${this.distancia.toFixed(2)} km, ${this.calorias.toFixed(2)} kcal, ${tiempoTranscurrido} mins`);
+    console.log(`Datos guardados: ${this.conteoPasos} pasos, ${this.distancia.toFixed(2)} km, ${this.calorias.toFixed(2)} kcal`);
   }
 
   public incrementarPasos() {

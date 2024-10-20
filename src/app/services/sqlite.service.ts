@@ -212,16 +212,11 @@ export class SqliteService {
   }
   
   
-  async desbloquearLogro(id: number) {
-    const sql = `UPDATE logros SET estado = 1, icono = 'trophy' WHERE id = ?`;
-    if (this.database) {
-      await this.database.executeSql(sql, [id]);
-    } else {
-      console.error('error desbloquear logro');
-    }
+  async desbloquearLogro(logroId: number) {
+    const sql = `UPDATE logros SET estado = 1 WHERE id = ?`;
+    console.log(`Desbloqueando logro con ID: ${logroId}`);
+    await this.ejecutarConsulta(sql, [logroId]);
   }
-  
-  // sqlite.service.ts
 
 async ejecutarConsulta(sql: string, params: any[] = []): Promise<any> {
   if (!this.database) {
