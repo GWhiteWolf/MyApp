@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PasosService } from '../../services/pasos.service';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 @Component({
   selector: 'app-home',
@@ -19,6 +20,10 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.getWeatherData();
     this.pasosService.iniciarSeguimiento();
+  }
+
+  async ionViewDidEnter() {
+    await this.requestNotificationPermission();
   }
 
   getWeatherData() {
@@ -67,5 +72,14 @@ export class HomePage implements OnInit {
   resetearProgreso() {
     this.pasosService.resetearProgreso();
     console.log('Progreso reseteado en la base de datos');
+  }
+
+  async requestNotificationPermission() {
+    const result = await LocalNotifications.requestPermissions();
+    if (result.display === 'granted') {
+      console.log('Permisos concedidos para enviar notificaciones');
+    } else {
+      console.log('Permisos denegados para enviar notificaciones');
+    }
   }
 }

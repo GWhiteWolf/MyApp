@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { SqliteService } from './sqlite.service';
 import { Logro } from '../clases/logro';
 import { ToastController } from '@ionic/angular';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 @Injectable({
   providedIn: 'root'
@@ -73,12 +74,30 @@ export class LogroService {
         if (cumplido) {
           await this.desbloquearLogro(logro.id);
           this.mostrarMensajeToast(`Logro desbloqueado: ${logro.nombre_logro}`);
+          await this.mostrarNotificacionLogro(logro.nombre_logro);
           hayLogrosDesbloqueados = true;
         }
       }
     }
   
     return hayLogrosDesbloqueados;
+  }
+
+  async mostrarNotificacionLogro(nombreLogro: string) {
+    await LocalNotifications.schedule({
+      notifications: [
+        {
+          title: '¡Felicidades!',
+          body: `Has desbloqueado el logro: ${nombreLogro}`,
+          id: 1, // Usa un ID único si tienes varias notificaciones
+          schedule: { at: new Date(Date.now() + 1000) }, // 1 segundo después
+          sound: undefined,
+          attachments: undefined,
+          actionTypeId: '',
+          extra: null
+        }
+      ]
+    });
   }
   
 }
