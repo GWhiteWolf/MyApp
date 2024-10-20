@@ -1,12 +1,17 @@
+// logro.service.ts
 import { Injectable } from '@angular/core';
 import { SqliteService } from './sqlite.service';
 import { Logro } from '../clases/logro';
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LogroService {
-  constructor(private sqliteService: SqliteService) {}
+  constructor(
+    private sqliteService: SqliteService,
+    private toastController: ToastController
+  ) {}
 
   async agregarLogro(logro: Logro) {
     await this.sqliteService.agregarLogro(logro);
@@ -16,27 +21,47 @@ export class LogroService {
     return this.sqliteService.obtenerLogros();
   }
 
-  // logro.service.ts
+  async actualizarLogro(logro: Logro) {
+    const sql = `
+      UPDATE logros SET nombre_logro = ?, descripcion = ?, tipo = ?, objetivo = ? 
+      WHERE id = ?
+    `;
+    await this.sqliteService.ejecutarConsulta(sql, [
+      logro.nombre_logro,
+      logro.descripcion,
+      logro.tipo,
+      logro.objetivo,
+      logro.id
+    ]);
+  }
 
-async actualizarLogro(logro: Logro) {
-  const sql = `
-    UPDATE logros SET nombre_logro = ?, descripcion = ?, tipo = ?, objetivo = ? 
-    WHERE id = ?
-  `;
-  await this.sqliteService.ejecutarConsulta(sql, [logro.nombre_logro, logro.descripcion, logro.tipo, logro.objetivo, logro.id]);
-}
+  async eliminarLogro(id: number) {
+    const sql = `DELETE FROM logros WHERE id = ?`;
+    await this.sqliteService.ejecutarConsulta(sql, [id]);
+  }
 
-async eliminarLogro(id: number) {
-  const sql = `DELETE FROM logros WHERE id = ?`;
-  await this.sqliteService.ejecutarConsulta(sql, [id]);
-}
+  async desbloquearLogro(logroId: number) {
+    const sql = `UPDATE logros SET estado = 1 WHERE id = ?`; // cambiar estado a 1 (desbloqueado)
+    await this.sqliteService.ejecutarConsulta(sql, [logroId]);
+  }
 
+  private async mostrarMensajeToast(mensaje: string) {
+    const toast = await this.toastController.create({
+      message: mensaje,
+      duration: 2000,
+      position: 'top'
+    });
+    await toast.present();
+  }
 
   async verificarLogros(pasos: number, calorias: number, tiempo: number) {
     const logros = await this.sqliteService.obtenerLogros();
+    let hayLogrosDesbloqueados = false;
+  
     for (const logro of logros) {
       if (logro.estado === 0) {
         let cumplido = false;
+  
         if (logro.tipo === 'pasos' && pasos >= logro.objetivo) {
           cumplido = true;
         } else if (logro.tipo === 'calorias' && calorias >= logro.objetivo) {
@@ -44,12 +69,16 @@ async eliminarLogro(id: number) {
         } else if (logro.tipo === 'tiempo' && tiempo >= logro.objetivo) {
           cumplido = true;
         }
-
+  
         if (cumplido) {
-          await this.sqliteService.desbloquearLogro(logro.id);
-          console.log(`Logro desbloqueado: ${logro.nombre_logro}`);
+          await this.desbloquearLogro(logro.id);
+          this.mostrarMensajeToast(`Logro desbloqueado: ${logro.nombre_logro}`);
+          hayLogrosDesbloqueados = true;
         }
       }
     }
+  
+    return hayLogrosDesbloqueados;
   }
+  
 }

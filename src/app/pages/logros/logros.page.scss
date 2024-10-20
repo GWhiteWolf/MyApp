@@ -6,7 +6,7 @@ ion-toolbar {
 
 ion-content {
     --background: #2f2c3d;
-    padding: 10px;
+    padding: 6px;
 }
 
 ion-grid {
@@ -15,23 +15,24 @@ ion-grid {
 }
 
 ion-col {
-    padding: 10px;
+    padding: 5px;
 }
 
 ion-card {
     width: 100%;
     --background: #1f1d28;
-    border-radius: 15px;
+    border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 15px;
+    padding: 8px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     transition: transform 0.3s ease;
     color: #fff;
-    margin-bottom: 20px;
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    min-height: 150px;
 }
 
 ion-card:hover {
@@ -40,56 +41,110 @@ ion-card:hover {
 
 ion-card-header {
     display: flex;
+    justify-content: center;
     align-items: center;
+    flex-direction: column;
+    margin-bottom: 4px;
 }
 
 ion-card-header ion-icon {
-    font-size: 1.8em;
-    margin-right: 15px;
+    font-size: 1.6em; /* Ajustar el tamaño del ícono para ser más parecido a los de CRUD */
+    margin-bottom: 8px;
+    color: #ffd700;
+    transition: transform 0.3s ease, color 0.3s ease;
 }
 
 ion-card-title {
-    font-size: 1.2em;
+    font-size: 1.5em;
     color: #ffbf6b;
+    margin-bottom: 1px;
+    text-align: center;
 }
 
 ion-card-subtitle {
     color: #ffffff99;
+    text-align: center;
+    font-size: 0.6em;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .crud-icons {
     display: flex;
     justify-content: flex-end;
-    margin-top: 10px;
-    gap: 10px;
+    margin-top: 4px;
+    gap: 3px;
 }
 
 .crud-icons ion-icon {
-    font-size: 1.4em;
-    margin-left: 5px;
+    font-size: 1.2em;
+    margin-left: 3px;
     color: #ffbf6b;
     cursor: pointer;
     transition: transform 0.3s ease;
 }
 
 .crud-icons ion-icon:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
 }
 
 ion-card.unlocked {
-    --background: #2f2c3d;
-    color: #ffbf6b;
-    animation: unlock 0.5s ease-in-out;
+    --background: #1f1d28;
+    animation: explode 1s ease-out forwards;
+    color: #fffee6;
+    box-shadow: 0 0 10px rgba(255, 191, 107, 0.7);
+    position: relative;
+    overflow: hidden;
+    min-height: 150px;
 }
 
 ion-card.locked {
     --background: #3a3a48;
     opacity: 0.5;
     filter: grayscale(100%);
+    min-height: 150px;
 }
 
-.locked ion-icon {
-    color: #ffbf6b;
+ion-card.unlocked::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 0, 0.038) 40%, rgba(255, 255, 255, 0.1) 100%);
+    transform: skewX(-20deg);
+    animation: shine 1.5s ease-in-out;
+}
+
+@keyframes shine {
+    0% {
+        left: -150%;
+    }
+    50% {
+        left: 50%;
+    }
+    100% {
+        left: 150%;
+    }
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.02);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+        box-shadow: 0 0 20px 5px rgba(255, 191, 107, 0.8);
+    }
 }
 
 @keyframes unlock {
@@ -103,13 +158,20 @@ ion-card.locked {
     }
 }
 
+ion-card.unlocked ion-icon {
+    transform: scale(1);
+    color: #ffd700;
+    transition: transform 0.3s ease;
+}
+
 .crud-actions {
     display: flex;
     justify-content: flex-end;
     padding: 10px;
+    color: #ffd700;
+    font-size: 1.2em;
 }
 
 .achievement-card[unlocked="true"] {
     animation: unlock 0.5s ease-in-out;
 }
-
