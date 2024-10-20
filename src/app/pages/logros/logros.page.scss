@@ -1,87 +1,115 @@
-/* Estilo del ion-toolbar */
 ion-toolbar {
     --background: linear-gradient(90deg, #262431, #33303f);
     --color: #ffbf6b;
     height: 56px;
 }
 
-/* Fondo del ion-content */
 ion-content {
---background: #2f2c3d;
-padding: 10px;
+    --background: #2f2c3d;
+    padding: 10px;
 }
 
-/* Estilo de la grilla de logros */
 ion-grid {
-max-width: 100%;
-margin: 0 auto;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
-/* Estilo de las tarjetas de logros */
-.achievement-card {
---background: #1f1d28;
-border-radius: 15px;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-padding: 15px;
-margin: 0px auto;
-display: flex;
-align-items: center;
-justify-content: center;
-transition: transform 0.3s ease;
-}
-
-.achievement-card:hover {
-transform: translateY(-5px); 
-}
-
-/* Estilo para logros desbloqueados */
-.achievement-card app-componente2[unlocked="true"] {
-color: #ffbf6b; 
-}
-
-/* Estilo para logros bloqueados */
-.achievement-card.locked {
---background: #3a3a48; 
-opacity: 0.5;
-filter: grayscale(100%); 
-}
-
-/* Estilo de las columnas */
 ion-col {
-padding: 10px;
+    padding: 10px;
 }
 
-/* Animación al desbloquear logros */
+ion-card {
+    width: 100%;
+    --background: #1f1d28;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+    color: #fff;
+    margin-bottom: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+ion-card:hover {
+    transform: translateY(-5px);
+}
+
+ion-card-header {
+    display: flex;
+    align-items: center;
+}
+
+ion-card-header ion-icon {
+    font-size: 1.8em;
+    margin-right: 15px;
+}
+
+ion-card-title {
+    font-size: 1.2em;
+    color: #ffbf6b;
+}
+
+ion-card-subtitle {
+    color: #ffffff99;
+}
+
+.crud-icons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.crud-icons ion-icon {
+    font-size: 1.4em;
+    margin-left: 5px;
+    color: #ffbf6b;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.crud-icons ion-icon:hover {
+    transform: scale(1.2);
+}
+
+ion-card.unlocked {
+    --background: #2f2c3d;
+    color: #ffbf6b;
+    animation: unlock 0.5s ease-in-out;
+}
+
+ion-card.locked {
+    --background: #3a3a48;
+    opacity: 0.5;
+    filter: grayscale(100%);
+}
+
+.locked ion-icon {
+    color: #ffbf6b;
+}
+
 @keyframes unlock {
-0% {
-    transform: scale(0.9);
-    opacity: 0.7;
+    0% {
+        transform: scale(0.9);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
-100% {
-    transform: scale(1);
-    opacity: 1;
-}
-}
-
-/* Añadir la animación a los logros desbloqueados */
-.achievement-card[unlocked="true"] {
-animation: unlock 0.5s ease-in-out;
-}
-
 
 .crud-actions {
     display: flex;
     justify-content: flex-end;
     padding: 10px;
-    }
-
-    .crud-icons {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    }
-
-    ion-icon {
-    font-size: 1.5em;
-    cursor: pointer;
 }
+
+.achievement-card[unlocked="true"] {
+    animation: unlock 0.5s ease-in-out;
+}
+
