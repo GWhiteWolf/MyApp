@@ -16,6 +16,7 @@ import { PasosService } from './services/pasos.service';
 import { SqliteService } from './services/sqlite.service';
 
 import { Pedometer } from '@ionic-native/pedometer/ngx';
+import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { Pedometer } from '@ionic-native/pedometer/ngx';
     PageNotFoundComponent,
   ],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite ,PasosService, SqliteService, Pedometer],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite ,PasosService, SqliteService, Pedometer, AndroidPermissions,],
   bootstrap: [AppComponent, HttpClientModule],
 })
 export class AppModule {}
