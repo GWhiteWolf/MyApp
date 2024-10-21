@@ -15,13 +15,15 @@ import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 import { PasosService } from './services/pasos.service';
 import { SqliteService } from './services/sqlite.service';
 
+import { Pedometer } from '@ionic-native/pedometer/ngx';
+
 @NgModule({
   declarations: [
     AppComponent,
     PageNotFoundComponent,
   ],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite ,PasosService, SqliteService],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite ,PasosService, SqliteService, Pedometer],
   bootstrap: [AppComponent, HttpClientModule],
 })
 export class AppModule {}
