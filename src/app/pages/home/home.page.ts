@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PasosService } from '../../services/pasos.service';
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
+import { Pedometer } from '@ionic-native/pedometer/ngx';
 
 @Component({
   selector: 'app-home',
@@ -10,16 +12,19 @@ import { LocalNotifications } from '@capacitor/local-notifications';
 })
 export class HomePage implements OnInit {
   weatherData: any;
-  seguimientoActivo: boolean = true; // Nueva variable para el estado de seguimiento
+  seguimientoActivo: boolean = true;
 
   constructor(
     private http: HttpClient,
-    public pasosService: PasosService
+    public pasosService: PasosService,
+    private androidPermissions: AndroidPermissions,
+    private pedometer: Pedometer
   ) {}
 
   ngOnInit() {
     this.getWeatherData();
     this.pasosService.iniciarSeguimiento();
+    this.requestPedometerPermission();
   }
 
   async ionViewDidEnter() {
@@ -80,6 +85,18 @@ export class HomePage implements OnInit {
       console.log('Permisos concedidos para enviar notificaciones');
     } else {
       console.log('Permisos denegados para enviar notificaciones');
+    }
+  }
+
+  async requestPedometerPermission() {
+    const permission = await this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACTIVITY_RECOGNITION);
+    if (!permission.hasPermission) {
+      this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACTIVITY_RECOGNITION).then(
+        result => console.log('Permiso concedido:', result),
+        err => console.error('Permiso denegado:', err)
+      );
+    } else {
+      console.log('Permiso de reconocimiento de actividad ya concedido.');
     }
   }
 }

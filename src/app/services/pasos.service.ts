@@ -4,6 +4,7 @@ import { SqliteService } from './sqlite.service';
 import { ToastController } from '@ionic/angular';
 import { HistorialActividad } from '../clases/historial-actividad';
 import { LogroService } from './logro.service';
+import { Pedometer } from '@ionic-native/pedometer/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,12 @@ export class PasosService {
   private suscripcionTemporizador: Subscription | null = null;
   private servicioSQLite: SqliteService;
 
-  constructor(private injector: Injector, private toastController: ToastController, private logroService: LogroService) {
+  constructor(
+    private injector: Injector,
+    private toastController: ToastController, 
+    private logroService: LogroService,
+    private pedometer: Pedometer
+  ) {
     this.servicioSQLite = this.injector.get(SqliteService);
   }
 
@@ -32,6 +38,21 @@ export class PasosService {
 
   iniciarSeguimiento() {
     this.tiempoInicio = Date.now();
+
+    this.pedometer.isStepCountingAvailable().then((available) => {
+      if (available) {
+        this.pedometer.startPedometerUpdates().subscribe((data) => {
+          this.conteoPasos = data.numberOfSteps;
+          this.calcularMetricas();
+          this.mostrarMensajeToast(`Pasos actualizados: ${this.conteoPasos}`);
+        });
+      } else {
+        console.log('El podómetro no está disponible en este dispositivo.');
+      }
+    }).catch((error) => {
+      console.error('Error verificando la disponibilidad del podómetro:', error);
+    });
+
     this.iniciarTemporizador();
     console.log('Seguimiento iniciado');
   }
@@ -40,8 +61,13 @@ export class PasosService {
     if (this.suscripcionTemporizador) {
       this.suscripcionTemporizador.unsubscribe();
       this.suscripcionTemporizador = null;
-      console.log('Seguimiento detenido');
     }
+
+    this.pedometer.stopPedometerUpdates().then(() => {
+      console.log('Seguimiento de pasos detenido');
+    }).catch((error) => {
+      console.error('Error al detener el seguimiento del podómetro:', error);
+    });
   }
 
   private calcularMetricas() {
