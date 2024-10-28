@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { Subscription, interval } from 'rxjs';
+import { BehaviorSubject,Subscription, interval } from 'rxjs';
 import { SqliteService } from './sqlite.service';
 import { ToastController } from '@ionic/angular';
 import { HistorialActividad } from '../clases/historial-actividad';
@@ -10,13 +10,20 @@ import { Pedometer } from '@ionic-native/pedometer/ngx';
   providedIn: 'root'
 })
 export class PasosService {
+  private conteoPasosSource = new BehaviorSubject<number>(0);
+  public conteoPasos$ = this.conteoPasosSource.asObservable();
   public conteoPasos: number = 0;
   public distancia: number = 0;
   public calorias: number = 0;
   public mediaDiaria = { pasos: 0, calorias: 0 };
+
   private tiempoInicio: number = 0;
+  private pasosIniciales: number | null = null;
+  private conteoPasosAnterior: number = 0;
+
   private suscripcionTemporizador: Subscription | null = null;
   private servicioSQLite: SqliteService;
+  private seguimientoIniciado = false;  //flag para saber si ya inicio el seguimiento
 
   constructor(
     private injector: Injector,
@@ -37,13 +44,19 @@ export class PasosService {
   }
 
   iniciarSeguimiento() {
+    if (this.seguimientoIniciado) {
+      return;
+    }
+    this.seguimientoIniciado = true;
     this.tiempoInicio = Date.now();
 
     this.pedometer.isStepCountingAvailable().then((available) => {
       if (available) {
         this.pedometer.startPedometerUpdates().subscribe((data) => {
-          this.conteoPasos = data.numberOfSteps;
-          this.calcularMetricas();
+          if (this.pasosIniciales === null) {
+            this.pasosIniciales = data.numberOfSteps;
+          }
+          this.actualizarConteoPasos(data.numberOfSteps);
           this.mostrarMensajeToast(`Pasos actualizados: ${this.conteoPasos}`);
         });
       } else {
@@ -62,12 +75,29 @@ export class PasosService {
       this.suscripcionTemporizador.unsubscribe();
       this.suscripcionTemporizador = null;
     }
-
+    this.conteoPasosAnterior = this.conteoPasos;
     this.pedometer.stopPedometerUpdates().then(() => {
       console.log('Seguimiento de pasos detenido');
     }).catch((error) => {
       console.error('Error al detener el seguimiento del podómetro:', error);
     });
+  }
+
+  reanudarSeguimiento() {
+    this.iniciarTemporizador();
+    this.pedometer.startPedometerUpdates().subscribe((data) => {
+      this.actualizarConteoPasos(data.numberOfSteps);
+      this.mostrarMensajeToast(`Pasos actualizados: ${this.conteoPasos}`);
+    });
+    console.log('Seguimiento reanudado');
+  }
+
+  private actualizarConteoPasos(pasosActuales: number) {
+    if (this.pasosIniciales !== null) {
+      this.conteoPasos = this.conteoPasosAnterior + (pasosActuales - this.pasosIniciales);
+      this.conteoPasosSource.next(this.conteoPasos);
+      this.calcularMetricas();
+    }
   }
 
   private calcularMetricas() {
@@ -127,6 +157,7 @@ export class PasosService {
 
   public incrementarPasos() {
     this.conteoPasos += 100;
+    this.conteoPasosSource.next(this.conteoPasos);
     this.calcularMetricas();
     if (this.conteoPasos % 100 === 0) {
       this.guardarProgreso();
@@ -137,6 +168,7 @@ export class PasosService {
     this.conteoPasos = 0;
     this.distancia = 0;
     this.calorias = 0;
+    this.conteoPasosSource.next(this.conteoPasos);
     console.log('Conteo de pasos, distancia y calorías reseteados');
   }
 

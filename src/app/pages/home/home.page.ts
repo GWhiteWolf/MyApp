@@ -11,6 +11,7 @@ import { Pedometer } from '@ionic-native/pedometer/ngx';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
+  pasos: number = 0;
   weatherData: any;
   seguimientoActivo: boolean = true;
 
@@ -24,11 +25,14 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.getWeatherData();
     this.pasosService.iniciarSeguimiento();
-    this.requestPedometerPermission();
+    this.pasosService.conteoPasos$.subscribe(pasos => {
+      this.pasos = pasos;
+    });
   }
 
   async ionViewDidEnter() {
     await this.requestNotificationPermission();
+    this.requestPedometerPermission();
   }
 
   getWeatherData() {
@@ -56,13 +60,15 @@ export class HomePage implements OnInit {
 
   detenerSeguimiento() {
     if (this.seguimientoActivo) {
+      // Si el seguimiento está activo, lo detenemos
       this.pasosService.detenerSeguimiento();
       console.log('Seguimiento detenido');
     } else {
-      this.pasosService.iniciarSeguimiento();
+      // Si el seguimiento está inactivo, lo reanudamos sin reiniciar el contador
+      this.pasosService.reanudarSeguimiento();
       console.log('Seguimiento reanudado');
     }
-    this.seguimientoActivo = !this.seguimientoActivo;
+    this.seguimientoActivo = !this.seguimientoActivo; // Cambia el estado
   }
 
   guardarProgreso() {
