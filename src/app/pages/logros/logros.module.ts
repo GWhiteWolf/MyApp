@@ -8,6 +8,8 @@ import { LogrosPageRoutingModule } from './logros-routing.module';
 
 import { LogrosPage } from './logros.page';
 import { SharedModule } from 'src/app/components/shared.module';
+import { FormularioLogroComponent } from '../../components/formulario-logro/formulario-logro.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -15,8 +17,9 @@ import { SharedModule } from 'src/app/components/shared.module';
     FormsModule,
     IonicModule,
     LogrosPageRoutingModule,
+    ReactiveFormsModule,
     SharedModule
   ],
-  declarations: [LogrosPage]
+  declarations: [LogrosPage, FormularioLogroComponent],
 })
 export class LogrosPageModule {}

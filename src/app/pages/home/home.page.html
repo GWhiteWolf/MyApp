@@ -9,7 +9,7 @@
     <ion-card class="progress-card">
       <ion-card-content>
 
-        <app-circular-progress [pasos]="pasosService.conteoPasos" [metaPasos]="10000"></app-circular-progress>
+        <app-circular-progress></app-circular-progress>
         
         <ion-button expand="block" class="pause-button" shape="round" (click)="detenerSeguimiento()">
           <ion-icon slot="start" [name]="seguimientoActivo ? 'pause' : 'play'"></ion-icon>

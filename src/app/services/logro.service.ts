@@ -89,7 +89,7 @@ export class LogroService {
         {
           title: '¡Felicidades!',
           body: `Has desbloqueado el logro: ${nombreLogro}`,
-          id: 1, // Usa un ID único si tienes varias notificaciones
+          id: 1, // id unico
           schedule: { at: new Date(Date.now() + 1000) }, // 1 segundo después
           sound: undefined,
           attachments: undefined,
