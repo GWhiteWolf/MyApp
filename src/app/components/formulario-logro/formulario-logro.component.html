@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ logro ? 'Editar Logro' : 'Agregar Logro' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="logroForm">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Nombre del logro</ion-label>
+        <ion-input formControlName="nombre" placeholder="Nombre del logro"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Descripción</ion-label>
+        <ion-input formControlName="descripcion" placeholder="Descripción"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Tipo</ion-label>
+        <ion-select formControlName="tipo" placeholder="Selecciona el tipo">
+          <ion-select-option value="pasos">Pasos</ion-select-option>
+          <ion-select-option value="calorias">Calorías</ion-select-option>
+          <ion-select-option value="tiempo">Tiempo</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Objetivo</ion-label>
+        <ion-input formControlName="objetivo" type="number" placeholder="Objetivo"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-footer>
+      <ion-button class="agregar-button" expand="full" (click)="guardar()" [disabled]="!logroForm.valid">
+        {{ logro ? 'Guardar' : 'Agregar' }}
+      </ion-button>
+      <button class="cancel-button" (click)="cancelar()">Cancelar</button>
+    </ion-footer>
+  </form>
+</ion-content>

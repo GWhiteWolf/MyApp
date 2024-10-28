@@ -2,7 +2,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LogroService } from '../../services/logro.service';
 import { Logro } from '../../clases/logro';
-import { AlertController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
+import { FormularioLogroComponent } from '../../components/formulario-logro/formulario-logro.component';
 import { PasosService } from '../../services/pasos.service'; 
 import { NgZone } from '@angular/core';
 
@@ -19,7 +20,7 @@ export class LogrosPage implements OnInit {
   constructor(
     private logroService: LogroService,
     private pasosService: PasosService,
-    private alertController: AlertController,
+    private modalController: ModalController,
     private zone: NgZone
   ) {}
 
@@ -39,29 +40,23 @@ export class LogrosPage implements OnInit {
 
 
   async abrirFormularioLogro(logro?: Logro) {
-    const alert = await this.alertController.create({
-      header: logro ? 'Editar Logro' : 'Agregar Logro',
-      inputs: [
-        { name: 'nombre', type: 'text', placeholder: 'Nombre del logro', value: logro?.nombre_logro || '' },
-        { name: 'descripcion', type: 'text', placeholder: 'Descripción', value: logro?.descripcion || '' },
-        { name: 'tipo', type: 'text', placeholder: 'Tipo (pasos, calorías, tiempo)', value: logro?.tipo || '' },
-        { name: 'objetivo', type: 'number', placeholder: 'Objetivo', value: logro?.objetivo || 0 },
-      ],
-      buttons: [
-        { text: 'Cancelar', role: 'cancel' },
-        {
-          text: logro ? 'Guardar' : 'Agregar',
-          handler: (data) => {
-            if (logro) {
-              this.actualizarLogro(logro.id, data.nombre, data.descripcion, data.tipo, data.objetivo);
-            } else {
-              this.agregarLogro(data.nombre, data.descripcion, data.tipo, data.objetivo);
-            }
-          }
-        }
-      ]
+    const modal = await this.modalController.create({
+      component: FormularioLogroComponent,
+      componentProps: { logro }
     });
-    await alert.present();
+
+    modal.onDidDismiss().then((result) => {
+      if (result.data) {
+        const { nombre, descripcion, tipo, objetivo } = result.data;
+        if (logro) {
+          this.actualizarLogro(logro.id, nombre, descripcion, tipo, objetivo);
+        } else {
+          this.agregarLogro(nombre, descripcion, tipo, objetivo);
+        }
+      }
+    });
+
+    await modal.present();
   }
 
   async agregarLogro(nombre: string, descripcion: string, tipo: string, objetivo: number) {
