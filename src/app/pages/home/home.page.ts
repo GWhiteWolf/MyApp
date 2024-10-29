@@ -4,6 +4,8 @@ import { PasosService } from '../../services/pasos.service';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 import { Pedometer } from '@ionic-native/pedometer/ngx';
+import { Geolocation } from '@capacitor/geolocation';
+import { WeatherService } from 'src/app/weather/weather.service';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +21,8 @@ export class HomePage implements OnInit {
     private http: HttpClient,
     public pasosService: PasosService,
     private androidPermissions: AndroidPermissions,
-    private pedometer: Pedometer
+    private pedometer: Pedometer,
+    private weatherService: WeatherService
   ) {}
 
   ngOnInit() {
@@ -35,17 +38,43 @@ export class HomePage implements OnInit {
     this.requestPedometerPermission();
   }
 
-  getWeatherData() {
-    const apiKey = '59fbedff4b8235728c58ef6c90088acd';
-    const city = 'Viña del Mar';
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
 
-    this.http.get(url).subscribe(data => {
-      this.weatherData = data;
-    }, error => {
-      console.log('Error obteniendo los datos del clima', error);
-    });
+  async getWeatherData(){
+    try {
+      // Obtener la posición actual
+      const position = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
+
+      // Obtener las coordenadas
+      const { latitude, longitude } = position.coords;
+
+      // Llamar a la API del clima usando las coordenadas
+      this.weatherService.getWeatherByCoordinates(latitude, longitude).subscribe(
+        data => {
+          this.weatherData = data;
+          console.log('Datos del clima:', this.weatherData);
+        },
+        error => {
+          console.log('Error obteniendo los datos del clima', error);
+        }
+      );
+
+    } catch (error) {
+      console.log('Error obteniendo la posición', error);
+    }
   }
+  // getWeatherData() {
+  //   const apiKey = '59fbedff4b8235728c58ef6c90088acd';
+  //   const city = 'Viña del Mar';
+  //   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+
+  //   this.http.get(url).subscribe(data => {
+  //     this.weatherData = data;
+  //   }, error => {
+  //     console.log('Error obteniendo los datos del clima', error);
+  //   });
+  // }
+
+
 
   incrementarPasos() {
     if (this.seguimientoActivo) { 
