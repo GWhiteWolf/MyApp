@@ -38,7 +38,11 @@ const routes: Routes = [
       }
     ]
   },
-  { path: '**', component: PageNotFoundComponent } // Ruta para el 404
+  {
+    path: 'cambiar-contrasena',
+    loadChildren: () => import('./pages/cambiar-contrasena/cambiar-contrasena.module').then( m => m.CambiarContrasenaPageModule)
+  }
+// Ruta para el 404
 ];
 
 @NgModule({
