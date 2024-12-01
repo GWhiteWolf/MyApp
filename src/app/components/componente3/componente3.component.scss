@@ -1,0 +1,38 @@
+/* Estilo del ion-toolbar */
+ion-toolbar {
+    --background: linear-gradient(90deg, #262431, #33303f);
+    --color: #ffbf6b;
+  }
+  
+  /* Fondo del contenido */
+  ion-content {
+    --background: #2f2c3d;
+  }
+  
+  /* Estilo de la lista */
+  ion-list {
+    background-color: #1f1d28;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 16px;
+  }
+  
+  /* Estilo del botón "Enviar" */
+  .enviar-button {
+    --background: linear-gradient(90deg, #ff6b6b, #ff8c42); /* Cambia el gradiente a tu preferencia */
+    --background-activated: #e65c5c; /* Color cuando el botón es presionado */
+    --border-radius: 30px;
+    --color: #ffffff; /* Color del texto */
+    font-size: 16px;
+    font-weight: bold;
+    height: 45px;
+    margin-top: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  .enviar-button:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+  }
+  

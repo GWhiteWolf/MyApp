@@ -33,6 +33,7 @@
     "@capacitor/keyboard": "6.0.2",
     "@capacitor/local-notifications": "^6.1.0",
     "@capacitor/status-bar": "6.0.1",
+    "@emailjs/browser": "^4.4.1",
     "@ionic-native/core": "^5.36.0",
     "@ionic-native/pedometer": "^5.36.0",
     "@ionic/angular": "^8.0.0",
