@@ -5,6 +5,7 @@ import { ToastController } from '@ionic/angular';
 import { HistorialActividad } from '../clases/historial-actividad';
 import { LogroService } from './logro.service';
 import { Pedometer } from '@ionic-native/pedometer/ngx';
+import { MetaService } from './meta.service'; 
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,8 @@ export class PasosService {
   public conteoPasos: number = 0;
   public distancia: number = 0;
   public calorias: number = 0;
+
+  private metaDiaria: number = 10000;
 
   private mediaDiariaSource = new BehaviorSubject<{ pasos: number; calorias: number }>({ pasos: 0, calorias: 0 });
   public mediaDiaria$ = this.mediaDiariaSource.asObservable();
@@ -31,7 +34,8 @@ export class PasosService {
     private injector: Injector,
     private toastController: ToastController, 
     private logroService: LogroService,
-    private pedometer: Pedometer
+    private pedometer: Pedometer,
+    private metaService: MetaService
   ) {
     this.servicioSQLite = this.injector.get(SqliteService);
   }
@@ -94,13 +98,28 @@ export class PasosService {
     console.log('Seguimiento reanudado');
   }
 
+  private verificarMetaDiaria(pasos: number) {
+    console.log(`Verificando meta diaria: Meta = ${this.metaDiaria}, Pasos actuales = ${pasos}`);
+    if (pasos >= this.metaDiaria) {
+      const hoy = new Date().getDate(); // Día actual
+      console.log(`Meta diaria alcanzada para el día ${hoy}, pasos: ${pasos}`);
+      this.metaService.completeMeta(hoy); // Actualizar la racha de metas
+    } else {
+      console.log(`Meta diaria no alcanzada: pasos (${pasos}) < meta diaria (${this.metaDiaria})`);
+    }
+  }
+  
+  
   private actualizarConteoPasos(pasosActuales: number) {
     if (this.pasosIniciales !== null) {
       this.conteoPasos = this.conteoPasosAnterior + (pasosActuales - this.pasosIniciales);
       this.conteoPasosSource.next(this.conteoPasos);
       this.calcularMetricas();
+      this.verificarMetaDiaria(this.conteoPasos);
     }
   }
+
+
 
   private calcularMetricas() {
     const longitudPaso = 0.78; // Longitud promedio de un paso en metros
@@ -143,6 +162,8 @@ export class PasosService {
       });
     });
   }
+
+
   
 
   public async guardarProgreso() {
@@ -161,10 +182,8 @@ export class PasosService {
     );
   
     try {
-      // Guardar en historial_actividad
+      // Guardar en historial_actividad y tabla pasos
       await this.servicioSQLite.agregarRegistroHistorial(actividad);
-  
-      // Guardar en la tabla pasos
       await this.servicioSQLite.guardarPasos(fecha, this.conteoPasos);
   
       console.log('Datos guardados correctamente. Recalculando media diaria...');
@@ -175,15 +194,21 @@ export class PasosService {
   
       // Verificar logros
       await this.logroService.verificarLogros(this.conteoPasos, this.calorias, tiempoTranscurrido);
-      console.log('Logros verificados.');
+
+      if (this.conteoPasos >= this.metaDiaria) {
+        const hoy = new Date().getDate();
+        console.log(`Meta diaria alcanzada para el día ${hoy}, notificando al MetaService`);
+        this.metaService.completeMeta(hoy);
+      }
+
     } catch (error) {
       console.error('Error al guardar progreso:', error);
     }
   }
   
-  
+
   public incrementarPasos() {
-    this.conteoPasos += 100;
+    this.conteoPasos += 1000;
     this.conteoPasosSource.next(this.conteoPasos);
     this.calcularMetricas();
     if (this.conteoPasos % 100 === 0) {

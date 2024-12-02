@@ -14,7 +14,6 @@ export class WeatherService {
   constructor(private http: HttpClient) {
     // Se inicia el rastreo de forma automática
     this.startTrackingWeather((weatherData) => {
-      console.log('Datos de clima', weatherData);
     })
   }
 
