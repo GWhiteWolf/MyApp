@@ -86,13 +86,59 @@ export class SqliteService {
     return this.dbListo.asObservable();
   }
 
-  obtenerListaPasos(): Observable<Pasos[]> {
-    return this.listaPasos.asObservable();
+  obtenerListaPasos(): Observable<any[]> {
+    return new Observable((observer) => {
+      if (!this.database) {
+        console.error('La base de datos no está inicializada.');
+        observer.error('La base de datos no está inicializada.');
+        return;
+      }
+  
+      this.database.executeSql('SELECT * FROM pasos', []).then((res) => {
+        if (res && res.rows) {
+          let items: any[] = [];
+          for (let i = 0; i < res.rows.length; i++) {
+            items.push(res.rows.item(i));
+          }
+          console.log('Registros obtenidos de la tabla pasos:', items); // Log detallado
+          observer.next(items);
+        } else {
+          console.warn('La consulta SQL no devolvió resultados.');
+          observer.next([]);
+        }
+        observer.complete();
+      }).catch((error) => {
+        console.error('Error ejecutando consulta SQL:', error);
+        observer.error(error);
+      });
+    });
   }
+  
 
   obtenerListaHistorial(): Observable<HistorialActividad[]> {
     return this.listaHistorial.asObservable();
   }
+
+  async guardarPasos(fecha: string, conteoPasos: number) {
+    if (!this.database) {
+      console.error('La base de datos no está inicializada.');
+      return;
+    }
+  
+    const sql = `
+      INSERT OR REPLACE INTO pasos (fecha, conteo_pasos, meta, meta_cumplida) 
+      VALUES (?, ?, ?, ?)
+    `;
+    const values = [fecha, conteoPasos, 10000, conteoPasos >= 10000 ? 1 : 0]; // Suponiendo meta de 10,000 pasos
+  
+    try {
+      await this.database.executeSql(sql, values);
+      console.log('Registro insertado en la tabla pasos:', { fecha, conteoPasos });
+    } catch (error) {
+      console.error('Error al guardar pasos en la tabla:', error);
+    }
+  }
+  
 
   async cargarListaPasos() {
     if (!this.database) return;

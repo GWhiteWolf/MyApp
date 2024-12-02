@@ -5,6 +5,7 @@ import { ToastController } from '@ionic/angular';
 import { HistorialActividad } from '../clases/historial-actividad';
 import { LogroService } from './logro.service';
 import { Pedometer } from '@ionic-native/pedometer/ngx';
+import { MetaService } from './meta.service'; 
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,11 @@ export class PasosService {
   public conteoPasos: number = 0;
   public distancia: number = 0;
   public calorias: number = 0;
-  public mediaDiaria = { pasos: 0, calorias: 0 };
+
+  private metaDiaria: number = 10000;
+
+  private mediaDiariaSource = new BehaviorSubject<{ pasos: number; calorias: number }>({ pasos: 0, calorias: 0 });
+  public mediaDiaria$ = this.mediaDiariaSource.asObservable();
 
   private tiempoInicio: number = 0;
   private pasosIniciales: number | null = null;
@@ -29,7 +34,8 @@ export class PasosService {
     private injector: Injector,
     private toastController: ToastController, 
     private logroService: LogroService,
-    private pedometer: Pedometer
+    private pedometer: Pedometer,
+    private metaService: MetaService
   ) {
     this.servicioSQLite = this.injector.get(SqliteService);
   }
@@ -92,13 +98,28 @@ export class PasosService {
     console.log('Seguimiento reanudado');
   }
 
+  private verificarMetaDiaria(pasos: number) {
+    console.log(`Verificando meta diaria: Meta = ${this.metaDiaria}, Pasos actuales = ${pasos}`);
+    if (pasos >= this.metaDiaria) {
+      const hoy = new Date().getDate(); // Día actual
+      console.log(`Meta diaria alcanzada para el día ${hoy}, pasos: ${pasos}`);
+      this.metaService.completeMeta(hoy); // Actualizar la racha de metas
+    } else {
+      console.log(`Meta diaria no alcanzada: pasos (${pasos}) < meta diaria (${this.metaDiaria})`);
+    }
+  }
+  
+  
   private actualizarConteoPasos(pasosActuales: number) {
     if (this.pasosIniciales !== null) {
       this.conteoPasos = this.conteoPasosAnterior + (pasosActuales - this.pasosIniciales);
       this.conteoPasosSource.next(this.conteoPasos);
       this.calcularMetricas();
+      this.verificarMetaDiaria(this.conteoPasos);
     }
   }
+
+
 
   private calcularMetricas() {
     const longitudPaso = 0.78; // Longitud promedio de un paso en metros
@@ -113,32 +134,45 @@ export class PasosService {
     });
   }
 
-  calcularMediaDiaria() {
-    this.servicioSQLite.obtenerListaPasos().subscribe(data => {
-      if (data.length > 0) {
-        const totalPasos = data.reduce((sum, item) => sum + item.conteo_pasos, 0);
-        const totalCalorias = data.reduce((sum, item) => sum + (item.conteo_pasos * 0.05), 0);
+  async calcularMediaDiaria(): Promise<{ pasos: number; calorias: number }> {
+    return new Promise((resolve, reject) => {
+      this.servicioSQLite.obtenerListaPasos().subscribe({
+        next: (data) => {
+          if (data.length > 0) {
+            const totalPasos = data.reduce((sum, item) => sum + item.conteo_pasos, 0);
+            const totalCalorias = data.reduce((sum, item) => sum + item.conteo_pasos * 0.05, 0);
 
-        this.mediaDiaria.pasos = Math.round(totalPasos / data.length);
-        this.mediaDiaria.calorias = Math.round(totalCalorias / data.length);
+            const media = {
+              pasos: Math.round(totalPasos / data.length),
+              calorias: Math.round(totalCalorias / data.length),
+            };
 
-        console.log('Media Diaria Calculada:', {
-          pasosPromedio: this.mediaDiaria.pasos,
-          caloriasPromedio: this.mediaDiaria.calorias
-        });
-      } else {
-        console.log('No hay registros para calcular la media diaria.');
-      }
+            this.mediaDiariaSource.next(media);
+            resolve(media);
+          } else {
+            const media = { pasos: 0, calorias: 0 };
+            this.mediaDiariaSource.next(media);
+            resolve(media);
+          }
+        },
+        error: (err) => {
+          console.error('Error al obtener registros para la media diaria:', err);
+          reject(err);
+        },
+      });
     });
   }
+
+
+  
 
   public async guardarProgreso() {
     this.calcularMetricas();
     const fecha = new Date().toISOString();
     const tiempoTranscurrido = this.obtenerTiempoTranscurrido();
-
+  
     const actividad = new HistorialActividad(
-      0, // ID se auto-incrementará en la base de datos
+      0,
       fecha,
       this.conteoPasos,
       this.calorias,
@@ -146,17 +180,35 @@ export class PasosService {
       tiempoTranscurrido,
       0
     );
+  
+    try {
+      // Guardar en historial_actividad y tabla pasos
+      await this.servicioSQLite.agregarRegistroHistorial(actividad);
+      await this.servicioSQLite.guardarPasos(fecha, this.conteoPasos);
+  
+      console.log('Datos guardados correctamente. Recalculando media diaria...');
+      
+      // Recalcular la media diaria
+      const mediaDiaria = await this.calcularMediaDiaria();
+      console.log('Media diaria recalculada:', mediaDiaria);
+  
+      // Verificar logros
+      await this.logroService.verificarLogros(this.conteoPasos, this.calorias, tiempoTranscurrido);
 
-    await this.servicioSQLite.agregarRegistroHistorial(actividad);
-    this.mostrarMensajeToast(`Datos guardados: ${this.conteoPasos} pasos, ${this.distancia.toFixed(2)} km, ${this.calorias.toFixed(2)} kcal`);
+      if (this.conteoPasos >= this.metaDiaria) {
+        const hoy = new Date().getDate();
+        console.log(`Meta diaria alcanzada para el día ${hoy}, notificando al MetaService`);
+        this.metaService.completeMeta(hoy);
+      }
 
-    await this.logroService.verificarLogros(this.conteoPasos, this.calorias, tiempoTranscurrido);
-
-    console.log(`Datos guardados: ${this.conteoPasos} pasos, ${this.distancia.toFixed(2)} km, ${this.calorias.toFixed(2)} kcal`);
+    } catch (error) {
+      console.error('Error al guardar progreso:', error);
+    }
   }
+  
 
   public incrementarPasos() {
-    this.conteoPasos += 100;
+    this.conteoPasos += 1000;
     this.conteoPasosSource.next(this.conteoPasos);
     this.calcularMetricas();
     if (this.conteoPasos % 100 === 0) {

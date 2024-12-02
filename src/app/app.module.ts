@@ -14,9 +14,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 import { PasosService } from './services/pasos.service';
 import { SqliteService } from './services/sqlite.service';
+import { MetaService } from './services/meta.service';
 
 import { Pedometer } from '@ionic-native/pedometer/ngx';
 import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
+
+
 
 @NgModule({
   declarations: [
@@ -24,7 +27,7 @@ import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions
     PageNotFoundComponent,
   ],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite ,PasosService, SqliteService, Pedometer, AndroidPermissions,],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite ,PasosService, SqliteService, Pedometer, AndroidPermissions, MetaService,],
   bootstrap: [AppComponent, HttpClientModule],
 })
 export class AppModule {}
