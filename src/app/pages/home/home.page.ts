@@ -28,6 +28,7 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.getWeatherData();
     this.pasosService.iniciarSeguimiento();
+    this.requestPedometerPermission();
     this.pasosService.conteoPasos$.subscribe(pasos => {
       this.pasos = pasos;
     });
@@ -35,7 +36,6 @@ export class HomePage implements OnInit {
 
   async ionViewDidEnter() {
     await this.requestNotificationPermission();
-    this.requestPedometerPermission();
   }
 
 
@@ -124,14 +124,38 @@ export class HomePage implements OnInit {
   }
 
   async requestPedometerPermission() {
-    const permission = await this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACTIVITY_RECOGNITION);
-    if (!permission.hasPermission) {
-      this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.ACTIVITY_RECOGNITION).then(
-        result => console.log('Permiso concedido:', result),
-        err => console.error('Permiso denegado:', err)
+    try {
+      const permission = await this.androidPermissions.checkPermission(
+        this.androidPermissions.PERMISSION.ACTIVITY_RECOGNITION
       );
-    } else {
-      console.log('Permiso de reconocimiento de actividad ya concedido.');
+  
+      if (permission.hasPermission) {
+        console.log('Permiso ya concedido.');
+        return;
+      }
+  
+      console.log('Permiso no concedido. Intentando solicitarlo...');
+      await this.androidPermissions.requestPermission(
+        this.androidPermissions.PERMISSION.ACTIVITY_RECOGNITION
+      ).then(
+        result => {
+          if (result.hasPermission) {
+            console.log('Permiso concedido.');
+          } else {
+            console.log('Permiso denegado por el usuario.');
+            alert('Para usar el contador de pasos, habilita el permiso en Configuración > Aplicaciones > Permisos.');
+          }
+        },
+        err => {
+          console.error('Error al solicitar permiso:', err);
+          alert('Para usar el contador de pasos, habilita el permiso en Configuración > Aplicaciones > Permisos.');
+        }
+      );
+    } catch (error) {
+      console.error('Error verificando permisos:', error);
+      alert('Para usar el contador de pasos, habilita el permiso en Configuración > Aplicaciones > Permisos.');
     }
   }
+  
+  
 }

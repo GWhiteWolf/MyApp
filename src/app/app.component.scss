@@ -19,7 +19,6 @@ ion-content {
   width: 80px;
   height: 80px;
   margin-bottom: 10px;
-  border: 2px solid #ffbf6b;
 }
 
 .profile-header h2 {
@@ -78,6 +77,12 @@ ion-list-header {
   letter-spacing: 1px;
 }
 
+.motivational-message {
+  font-size: 16px;
+  color: #ffcc00;
+  margin-bottom: 5px;
+  text-align: center;
+}
 
 .logout-button {
   --background: linear-gradient(90deg, #f0b364, #bf802d);
